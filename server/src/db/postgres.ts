@@ -18,3 +18,8 @@ export async function insertProduct(input: NewProduct) {
   );
   return rows[0];
 }
+
+export async function deleteProduct(id: number) {
+  const { rowCount } = await pool.query("DELETE FROM products WHERE id = $1", [id]);
+  return (rowCount ?? 0) > 0;
+}
