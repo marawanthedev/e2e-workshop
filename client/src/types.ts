@@ -5,3 +5,5 @@ export type Product = {
   category: string;
   image_url: string;
 };
+
+export type NewProduct = Omit<Product, "id">;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchProducts } from "../api/products";
-import type { Product } from "../types";
+import { createProduct, fetchProducts } from "../api/products";
+import type { NewProduct, Product } from "../types";
 
 export function useProducts() {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
@@ -18,5 +18,10 @@ export function useProducts() {
   const products =
     category === "All" ? allProducts : allProducts.filter((product) => product.category === category);
 
-  return { products, category, setCategory, loading, error };
+  const addProduct = async (input: NewProduct) => {
+    const created = await createProduct(input);
+    setAllProducts((prev) => [...prev, created]);
+  };
+
+  return { products, category, setCategory, loading, error, addProduct };
 }
