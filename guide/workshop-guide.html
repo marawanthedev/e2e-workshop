@@ -1,0 +1,1962 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mini Shop Workshop Guide</title>
+<style>:root { --bg:#f6f7fb; --surface:#fff; --text:#1c2033; --muted:#6b7185; --border:#e4e7f0; --primary:#4f46e5; --primary-soft:#eef0ff; --code-bg:#0f1226; --code-text:#e6e8ff; --warn:#b45309; --warn-bg:#fff7ed; --ok:#15803d; --ok-bg:#f0fdf4; --say-bg:#fefce8; --say-border:#facc15; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1020; --surface:#161a33; --text:#eef0ff; --muted:#a3a9d1; --border:#2a2f5a; --primary:#818cf8; --primary-soft:#232850; --code-bg:#080a18; --warn:#fbbf24; --warn-bg:#2a2108; --ok:#4ade80; --ok-bg:#0d2418; --say-bg:#2a2508; --say-border:#a16207; } }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body { margin:0; background:var(--bg); color:var(--text); font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; line-height:1.6; }
+a { color:var(--primary); }
+code { font-family: ui-monospace,Menlo,Consolas,monospace; font-size:.9em; background:var(--primary-soft); padding:.1em .4em; border-radius:6px; }
+.top { position:sticky; top:0; z-index:20; display:flex; align-items:center; gap:14px; padding:10px 20px; background:var(--surface); border-bottom:1px solid var(--border); }
+.brand { display:flex; align-items:center; gap:10px; font-weight:700; color:var(--text); text-decoration:none; flex:1; }
+.mark { display:grid; place-items:center; width:30px; height:30px; border-radius:9px; background:var(--primary); color:#fff; }
+#menu { display:none; border:1px solid var(--border); background:var(--surface); color:var(--text); border-radius:8px; font-size:1.1rem; padding:4px 10px; cursor:pointer; }
+.toggle { display:flex; align-items:center; gap:8px; font-size:.9rem; font-weight:600; cursor:pointer; }
+.layout { display:grid; grid-template-columns: 260px minmax(0,1fr); max-width:1240px; margin:0 auto; }
+nav { position:sticky; top:53px; align-self:start; height:calc(100vh - 53px); overflow-y:auto; padding:20px 12px 40px 20px; border-right:1px solid var(--border); }
+nav h4 { margin:18px 0 6px; font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); }
+nav a { display:block; padding:6px 10px; border-radius:8px; color:var(--text); text-decoration:none; font-size:.93rem; }
+nav a:hover { background:var(--primary-soft); }
+nav a.current { background:var(--primary); color:#fff; }
+main { padding:12px 40px 120px; min-width:0; }
+.page { padding-top:36px; margin-bottom:56px; border-bottom:1px solid var(--border); padding-bottom:40px; }
+.kicker { font-size:.78rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--primary); }
+h1 { font-size:2rem; margin:.2em 0 .3em; line-height:1.2; }
+h2 { font-size:1.35rem; margin:2em 0 .5em; padding-top:.4em; border-top:1px solid var(--border); }
+h3 { font-size:1.05rem; margin:1.4em 0 .4em; }
+.lead { font-size:1.1rem; color:var(--muted); margin-top:0; }
+.meta { display:flex; flex-wrap:wrap; gap:8px 22px; margin:14px 0 8px; font-size:.9rem; color:var(--muted); }
+.meta b { color:var(--text); }
+ul, ol { padding-left:1.4em; } li { margin:.3em 0; }
+.table-wrap { overflow-x:auto; margin:1em 0; }
+table { border-collapse:collapse; width:100%; font-size:.93rem; background:var(--surface); border:1px solid var(--border); border-radius:10px; }
+th, td { text-align:left; padding:9px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
+th { background:var(--primary-soft); font-size:.82rem; text-transform:uppercase; letter-spacing:.04em; }
+.code { margin:1.1em 0; border-radius:12px; overflow:hidden; background:var(--code-bg); border:1px solid var(--border); }
+.code figcaption { display:flex; align-items:center; gap:10px; padding:8px 12px; background:rgba(255,255,255,.06); color:#c9ceff; font-size:.82rem; }
+.file { flex:1; font-family:ui-monospace,Menlo,Consolas,monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.badge { font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; padding:2px 8px; border-radius:99px; }
+.badge.type { background:#fde68a; color:#78350f; } .badge.paste { background:#bbf7d0; color:#14532d; }
+.copy { border:1px solid rgba(255,255,255,.25); background:transparent; color:#fff; border-radius:7px; padding:3px 12px; font-size:.8rem; cursor:pointer; }
+.copy:hover { background:rgba(255,255,255,.12); }
+.copy.done { background:#16a34a; border-color:#16a34a; }
+.code-note { margin:0; padding:8px 14px; font-size:.86rem; color:#c9ceff; background:rgba(129,140,248,.12); }
+pre { margin:0; padding:14px 16px; overflow-x:auto; color:var(--code-text); font-size:.84rem; line-height:1.55; tab-size:2; }
+pre code { background:none; padding:0; font-size:inherit; border-radius:0; }
+.t-c { color:#7c85b8; font-style:italic; } .t-s { color:#a5e6a0; } .t-k { color:#c4b5fd; } .t-n { color:#fdba74; }
+.callout { margin:1.1em 0; padding:12px 16px; border-radius:10px; border-left:4px solid var(--primary); background:var(--primary-soft); }
+.callout strong { display:block; margin-bottom:2px; }
+.callout.checkpoint { border-color:var(--ok); background:var(--ok-bg); }
+.callout.warn { border-color:var(--warn); background:var(--warn-bg); }
+.callout p { margin:.3em 0; }
+.say { margin:1.1em 0; padding:12px 16px; border-radius:10px; background:var(--say-bg); border-left:4px solid var(--say-border); }
+.say strong { display:block; font-size:.75rem; text-transform:uppercase; letter-spacing:.08em; margin-bottom:2px; }
+.say p { margin:.3em 0; font-style:italic; }
+.changed { margin:1em 0; font-size:.9rem; } .changed summary { cursor:pointer; font-weight:600; }
+.st { font-size:.7rem; font-weight:700; padding:1px 7px; border-radius:99px; text-transform:uppercase; }
+.st-A { background:#bbf7d0; color:#14532d; } .st-M { background:#fde68a; color:#78350f; } .st-D { background:#fecaca; color:#7f1d1d; }
+.presenter { display:none; }
+body.show-presenter .presenter { display:block; }
+body.show-presenter nav .group.presenter { display:block; }
+body.show-presenter ul.presenter, body.show-presenter ol.presenter { display:block; }
+body.show-presenter .table-wrap.presenter { display:block; }
+body.show-presenter h3.presenter, body.show-presenter p.presenter { display:block; }
+body.show-presenter .page.presenter { display:block; }
+body.show-presenter nav a { }
+body.show-presenter .page.presenter h1::before { content:"Presenter · "; color:var(--warn); }
+@media (max-width: 860px) {
+  #menu { display:block; }
+  .layout { grid-template-columns:1fr; }
+  nav { position:fixed; top:53px; left:0; bottom:0; width:280px; z-index:15; background:var(--surface); transform:translateX(-100%); transition:transform .2s; height:auto; }
+  body.menu-open nav { transform:none; box-shadow:4px 0 24px rgba(0,0,0,.25); }
+  main { padding:8px 16px 80px; }
+}
+@media print { .top, nav { display:none; } .layout { display:block; } .page { break-after:page; } .copy { display:none; } pre { white-space:pre-wrap; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <button id="menu" type="button" aria-label="Menu">☰</button>
+  <a class="brand" href="#overview"><span class="mark">M</span> Mini Shop Workshop</a>
+  <label class="toggle"><input id="presenter" type="checkbox"> Presenter notes</label>
+</header>
+<div class="layout">
+  <nav id="nav"><div class="group"><h4>Start</h4><a href="#overview">Overview</a><a href="#prerequisites">Prerequisites</a></div><div class="group"><h4>Build</h4><a href="#setup">0 · Setup</a><a href="#step-1">1 · UI and sample data</a><a href="#step-2">2 · Server and CORS</a><a href="#step-3">3 · Database</a><a href="#step-4">4 · API layer and hook</a><a href="#step-5">5 · Add a product</a><a href="#step-6">6 · Validation</a><a href="#step-7">7 · Delete and Postman</a><a href="#step-8">8 · Cart and zustand</a></div><div class="group"><h4>Finish</h4><a href="#wrapup">Wrap-up and quiz</a></div><div class="group"><h4>Extras</h4><a href="#bonus">Bonus: keys lab</a><a href="#deploy">Deploy it</a></div><div class="group"><h4>Reference</h4><a href="#cheatsheet">Cheat sheet</a></div><div class="group presenter"><h4>Presenter</h4><a href="#facilitator">Facilitator guide</a></div></nav>
+  <main>
+<section class="page" id="overview">
+    <div class="kicker">Workshop</div>
+    <h1>From Click to Database</h1>
+    <p class="lead">Build a small shop end to end and see how every layer connects: React in the browser, an Express API, and a Postgres database on Neon.</p>
+    
+    <h2 id="overview-flow">The big picture</h2>
+<figure class="code ">
+  <figcaption><span class="file">What happens when you click</span><button class="copy" data-target="c1" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c1" class="lang-text">Browser (React + TypeScript)  -&gt;  Express API (Node.js)  -&gt;  Postgres (Neon)
+   ui -&gt; hooks -&gt; api layer        routes -&gt; controllers -&gt; db
+
+click -&gt; HTTP request -&gt; route -&gt; controller -&gt; SQL -&gt; rows -&gt; JSON -&gt; React redraws</code></pre>
+</figure>
+<p>Today we build every arrow in that picture, one small step at a time.</p>
+<h2 id="overview-what">What you will build: Mini Shop</h2>
+<ul><li>A product page with category filters, built from real data</li><li>A small API with a health check, CORS and a database</li><li>An Add product form that is protected by validation</li><li>A shopping cart that shares its state across the whole app</li></ul>
+<p>The styling is already done, so you only write TypeScript and JSX.</p>
+<h2 id="overview-learn">What you will pick up</h2>
+<div class="table-wrap"><table><thead><tr><th>Topic</th><th>Where</th></tr></thead><tbody><tr><td>Local state, props and rendering lists</td><td>Step 1</td></tr><tr><td>Backend routing, health checks, CORS</td><td>Step 2</td></tr><tr><td>Neon, database connections, env files, seeding</td><td>Step 3</td></tr><tr><td>The api layer and custom hooks</td><td>Step 4</td></tr><tr><td>Forms and what happens with bad data</td><td>Step 5</td></tr><tr><td>Validation with Zod</td><td>Step 6</td></tr><tr><td>Postman and the delete endpoint</td><td>Step 7</td></tr><tr><td>Global state with zustand</td><td>Step 8</td></tr><tr><td>A bit of TypeScript, throughout</td><td>All steps</td></tr></tbody></table></div>
+<h2 id="overview-steps">The steps</h2>
+<div class="table-wrap"><table><thead><tr><th>Step</th><th>What we do</th><th>Branch (end of step)</th></tr></thead><tbody><tr><td>0</td><td>Clone, install, run the check</td><td><code>starter</code></td></tr><tr><td>1</td><td>Build the product page from sample data, with filters</td><td><code>step-1-ui-sample-data</code></td></tr><tr><td>2</td><td>Start the Node app: health, an empty list endpoint, CORS</td><td><code>step-2-server-cors</code></td></tr><tr><td>3</td><td>Connect Neon, seed it, serve real products</td><td><code>step-3-database</code></td></tr><tr><td>4</td><td>Replace sample data with the API, then extract a hook</td><td><code>step-4-api-hook</code></td></tr><tr><td>5</td><td>Add the form and push a faulty product</td><td><code>step-5-add-product</code></td></tr><tr><td>6</td><td>Add Zod validation and push a clean product</td><td><code>step-6-validation</code></td></tr><tr><td>7</td><td>Add the delete endpoint and use Postman</td><td><code>step-7-delete-postman</code></td></tr><tr><td>8</td><td>Add the cart with a zustand store</td><td><code>step-8-cart-zustand</code></td></tr><tr><td>+</td><td>Finished app, plus deploy files</td><td><code>final</code></td></tr><tr><td>+</td><td>Keys and Profiler lab</td><td><code>bonus</code></td></tr></tbody></table></div>
+<h2 id="overview-how">How this guide works</h2>
+<ul><li>Each step lists the files to write. <span class='badge type'>type along</span> files are the lesson, so type them. <span class='badge paste'>copy and paste</span> files are plumbing, so paste them and read them.</li><li>Every code box has a <b>Copy</b> button. The code is taken from the real branches, so it always matches.</li><li>Each branch is the state <b>at the end</b> of a step. The start of step N is the branch of step N-1.</li></ul>
+<figure class="code ">
+  <figcaption><span class="file">Fell behind? Jump to any step</span><button class="copy" data-target="c2" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c2" class="lang-bash">git checkout -f step-<span class="t-n">3</span>-database</code></pre>
+</figure>
+<h2 id="overview-start">The opening (presenter)</h2>
+<ol class="presenter"><li><b>About me:</b> who you are, your experience, why you are teaching this.</li><li><b>What we will build:</b> show the finished app in a browser for a minute.</li><li><b>Demo video:</b> play the walkthrough video (2 minutes).</li><li><b>Prerequisites:</b> Git and Node.js, plus Postman and a Neon account. Check who already has them.</li><li><b>Share the repo link</b> on the screen and in the chat: <code>https://github.com/marawanthedev/e2e-workshop</code></li></ol>
+<aside class="say presenter"><strong>Say</strong>Do not show code yet. For the first 15 minutes the goal is that everyone knows where we are going and has the repo link in front of them.</aside>
+  </section>
+<section class="page" id="prerequisites">
+    <div class="kicker">Before the workshop</div>
+    <h1>Prerequisites</h1>
+    <p class="lead">About 20 minutes. Do this at home, because venue wifi makes installs slow. When you finish, send the facilitator a screenshot of the check in the last section.</p>
+    <div class="meta"><span><b>Time</b> 20 min</span><span><b>Cost</b> free, no credit card</span></div>
+    <h2 id="prerequisites-list">What you need</h2>
+<div class="table-wrap"><table><thead><tr><th>Tool</th><th>Why</th><th>Get it</th></tr></thead><tbody><tr><td>Node.js 22 LTS</td><td>runs the server, the build tools and npm</td><td><a href='https://nodejs.org'>nodejs.org</a>, pick the LTS download</td></tr><tr><td>Git</td><td>get the code and switch between steps</td><td><a href='https://git-scm.com/downloads'>git-scm.com</a></td></tr><tr><td>VS Code</td><td>editor used in the session</td><td><a href='https://code.visualstudio.com'>code.visualstudio.com</a></td></tr><tr><td>Neon account</td><td>your free cloud Postgres database</td><td><a href='https://neon.com'>neon.com</a> (sign up only, we create the database together)</td></tr><tr><td>Postman</td><td>test the API without a frontend</td><td><a href='https://www.postman.com/downloads/'>postman.com/downloads</a></td></tr><tr><td>Chrome or Edge</td><td>DevTools and the Network tab</td><td>any recent version</td></tr><tr><td>GitHub account (optional)</td><td>keep your own copy of the code</td><td><a href='https://github.com/signup'>github.com/signup</a></td></tr></tbody></table></div>
+<h2 id="prerequisites-install">1. Install and verify</h2>
+<p>Install Node.js (LTS) and Git with the default options, then <b>open a new terminal</b> and check:</p>
+<figure class="code ">
+  <figcaption><span class="file">Terminal</span><button class="copy" data-target="c3" type="button">Copy</button></figcaption>
+  <p class="code-note">Node must say v20.19 or higher. v22 is what we use.</p>
+  <pre><code id="c3" class="lang-bash">node -v
+npm -v
+git --version</code></pre>
+</figure>
+<aside class="callout warn"><strong>Windows</strong><p>Use <b>Git Bash</b> (installed with Git) or <b>PowerShell</b>. If a command is not found right after installing, close and reopen the terminal.</p></aside>
+<h2 id="prerequisites-neon">2. Neon and Postman</h2>
+<ul><li>Sign up at <a href='https://neon.com'>neon.com</a>. GitHub login is fine. You only need the account for now, because we create the database together in step 3.</li><li>Install Postman and open it once. If it asks you to sign in, create a free account.</li></ul>
+<h2 id="prerequisites-clone">3. Get the code and run the check</h2>
+<figure class="code ">
+  <figcaption><span class="file">Terminal</span><button class="copy" data-target="c4" type="button">Copy</button></figcaption>
+  <p class="code-note">Run these in the folder where you keep your projects.</p>
+  <pre><code id="c4" class="lang-bash">git clone https://github.com/marawanthedev/e2e-workshop.git
+cd e2e-workshop
+git checkout starter
+npm install
+npm run check</code></pre>
+</figure>
+<aside class="callout checkpoint"><strong>Checkpoint</strong><p><code>npm run check</code> prints a tick for Node, Git, the installed packages and the free ports, and ends with <b>All good, you are ready for the workshop.</b> The lines with a dash are things we do together later. Send a screenshot to the facilitator. If anything shows a cross, send that screenshot instead and we will fix it before the day.</p></aside>
+<h2 id="prerequisites-trouble">If something is wrong</h2>
+<div class="table-wrap"><table><thead><tr><th>Symptom</th><th>Fix</th></tr></thead><tbody><tr><td><code>npm run check</code> says Node is too old</td><td>Install Node 22 LTS, then reopen the terminal</td></tr><tr><td>A port is in use</td><td>Close other dev servers, or restart your computer</td></tr><tr><td><code>npm install</code> is very slow</td><td>Try a different network or a phone hotspot, and do it before the workshop</td></tr><tr><td><code>git</code> is not found</td><td>Reopen the terminal after installing Git. On Windows use Git Bash</td></tr></tbody></table></div>
+  </section>
+<section class="page" id="setup">
+    <div class="kicker">Step 0</div>
+    <h1>Setup and tour</h1>
+    <p class="lead">Run the check script, start the app and look around. Everybody must see all ticks before we start building.</p>
+    <div class="meta"><span><b>Time</b> 0:15 to 0:25 (10 min)</span><span><b>Branch</b> <code>starter</code></span><span><b>Priority</b> must</span></div>
+    <h2 id="setup-run">Run it</h2>
+<figure class="code ">
+  <figcaption><span class="file">Terminal</span><button class="copy" data-target="c5" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c5" class="lang-bash">git checkout starter
+npm install
+npm run check
+npm run dev</code></pre>
+</figure>
+<p>Open <a href='http://localhost:5173'>http://localhost:5173</a>. You should see the header and a TODO line. (There is no server yet, so the server side of <code>npm run dev</code> may print a message. That is expected, we build it in step 2.)</p>
+<aside class="callout checkpoint"><strong>Checkpoint</strong><p>The page shows the Mini Shop header and the line <i>TODO: show the products here</i>. <code>npm run check</code> shows ticks for Node, Git, packages and ports.</p></aside>
+<h2 id="setup-tour">Tour of the project</h2>
+<figure class="code ">
+  <figcaption><span class="file">Project layout</span><button class="copy" data-target="c6" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c6" class="lang-text">e2e-workshop/
+  client/                 React + Vite + TypeScript
+    src/
+      App.tsx             an empty shell: we build <span class="t-k">from</span> here
+      types.ts            the Product <span class="t-k">type</span>
+      constants.ts        the category names
+      styles/app.css      ALL styling is done already
+  server/                 Express + TypeScript (almost empty)
+    src/config.ts         port and allowed origin
+  scripts/check.mjs       the setup check</code></pre>
+</figure>
+<ul><li><b>You only write TypeScript and JSX.</b> The CSS class names are already in the stylesheet.</li><li><code>npm run dev</code> runs the client and the server together. Edits reload the browser automatically.</li><li><code>npm run typecheck</code> checks both sides for type errors.</li></ul>
+<aside class="say presenter"><strong>Say</strong>Walk the room while they install. Everyone must see the check pass before step 1. Do not let setup problems eat the first hour: pair a stuck student with a neighbour and carry on.</aside>
+<div class="table-wrap presenter"><table><thead><tr><th>Symptom</th><th>Fix</th></tr></thead><tbody><tr><td>Node too old</td><td>Install Node 22 LTS, reopen the terminal</td></tr><tr><td>Port in use</td><td>Another dev server is running. Close it</td></tr><tr><td>Slow <code>npm install</code></td><td>Phone hotspot, or share a zipped <code>node_modules</code> on a USB drive</td></tr></tbody></table></div>
+  </section>
+<section class="page" id="step-1">
+    <div class="kicker">Step 1</div>
+    <h1>The UI with sample data</h1>
+    <p class="lead">Build the product page: a list of products, pictures, and category filters. The data is hardcoded for now.</p>
+    <div class="meta"><span><b>Time</b> 0:25 to 0:50 (25 min)</span><span><b>Branch at the end</b> <code>step-1-ui-sample-data</code></span><span><b>Topics</b> components, props, local state</span></div>
+    <details class="changed"><summary>Files that change in this step (5)</summary><ul><li><span class="st st-M">edited</span> <code>client/src/App.tsx</code></li><li><span class="st st-A">new</span> <code>client/src/components/CategoryFilter.tsx</code></li><li><span class="st st-A">new</span> <code>client/src/components/ProductCard.tsx</code></li><li><span class="st st-A">new</span> <code>client/src/components/ProductList.tsx</code></li><li><span class="st st-A">new</span> <code>client/src/data/sampleProducts.ts</code></li></ul></details>
+<h2 id="step-1-data">1. Sample data, with pictures</h2>
+<p>Paste the data first. Every product has an <code>image_url</code>, which is a public link to a photo, so there is nothing to download.</p>
+<figure class="code paste">
+  <figcaption><span class="file">client/src/data/sampleProducts.ts</span><span class="badge paste">copy and paste</span><button class="copy" data-target="c7" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c7" class="lang-ts"><span class="t-k">import</span> <span class="t-k">type</span> { Product } <span class="t-k">from</span> <span class="t-s">"../types"</span>;
+
+<span class="t-c">// Sample data for steps 1 to 3. In step 4 the products come from the database instead.</span>
+<span class="t-k">export</span> <span class="t-k">const</span> sampleProducts: Product[] = [
+  { id: <span class="t-n">1</span>, name: <span class="t-s">"MacBook Pro 14"</span>, price: <span class="t-n">1999.99</span>, category: <span class="t-s">"Electronics"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/laptops/apple-macbook-pro-14-inch-space-grey/thumbnail.webp"</span> },
+  { id: <span class="t-n">2</span>, name: <span class="t-s">"Asus Zenbook Pro"</span>, price: <span class="t-n">1799.99</span>, category: <span class="t-s">"Electronics"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/laptops/asus-zenbook-pro-dual-screen-laptop/thumbnail.webp"</span> },
+  { id: <span class="t-n">3</span>, name: <span class="t-s">"iPhone 5s"</span>, price: <span class="t-n">199.99</span>, category: <span class="t-s">"Electronics"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/smartphones/iphone-5s/thumbnail.webp"</span> },
+  { id: <span class="t-n">4</span>, name: <span class="t-s">"Check Shirt"</span>, price: <span class="t-n">29.99</span>, category: <span class="t-s">"Clothing"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/mens-shirts/blue-&amp;-black-check-shirt/thumbnail.webp"</span> },
+  { id: <span class="t-n">5</span>, name: <span class="t-s">"Aorus T-Shirt"</span>, price: <span class="t-n">24.99</span>, category: <span class="t-s">"Clothing"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/mens-shirts/gigabyte-aorus-men-tshirt/thumbnail.webp"</span> },
+  { id: <span class="t-n">6</span>, name: <span class="t-s">"Black Gown"</span>, price: <span class="t-n">129.99</span>, category: <span class="t-s">"Clothing"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/womens-dresses/black-women's-gown/thumbnail.webp"</span> },
+  { id: <span class="t-n">7</span>, name: <span class="t-s">"Colombo Bed"</span>, price: <span class="t-n">1899.99</span>, category: <span class="t-s">"Home"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/furniture/annibale-colombo-bed/thumbnail.webp"</span> },
+  { id: <span class="t-n">8</span>, name: <span class="t-s">"Colombo Sofa"</span>, price: <span class="t-n">2499.99</span>, category: <span class="t-s">"Home"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/furniture/annibale-colombo-sofa/thumbnail.webp"</span> },
+  { id: <span class="t-n">9</span>, name: <span class="t-s">"Decoration Swing"</span>, price: <span class="t-n">59.99</span>, category: <span class="t-s">"Home"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/home-decoration/decoration-swing/thumbnail.webp"</span> },
+  { id: <span class="t-n">10</span>, name: <span class="t-s">"Black Sunglasses"</span>, price: <span class="t-n">29.99</span>, category: <span class="t-s">"Accessories"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/sunglasses/black-sun-glasses/thumbnail.webp"</span> },
+  { id: <span class="t-n">11</span>, name: <span class="t-s">"Classic Sunglasses"</span>, price: <span class="t-n">24.99</span>, category: <span class="t-s">"Accessories"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/sunglasses/classic-sun-glasses/thumbnail.webp"</span> },
+  { id: <span class="t-n">12</span>, name: <span class="t-s">"Leather Belt Watch"</span>, price: <span class="t-n">89.99</span>, category: <span class="t-s">"Accessories"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/mens-watches/brown-leather-belt-watch/thumbnail.webp"</span> },
+];</code></pre>
+</figure>
+<h2 id="step-1-pieces">2. The small UI pieces</h2>
+<p>These only draw what they are given. Paste them and read them.</p>
+<figure class="code paste">
+  <figcaption><span class="file">client/src/components/ProductCard.tsx</span><span class="badge paste">copy and paste</span><button class="copy" data-target="c8" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c8" class="lang-ts"><span class="t-k">import</span> <span class="t-k">type</span> { Product } <span class="t-k">from</span> <span class="t-s">"../types"</span>;
+
+<span class="t-k">type</span> Props = {
+  product: Product;
+};
+
+<span class="t-k">export</span> <span class="t-k">default</span> <span class="t-k">function</span> ProductCard({ product }: Props) {
+  <span class="t-k">return</span> (
+    &lt;article className=<span class="t-s">"card"</span>&gt;
+      &lt;img className=<span class="t-s">"card-img"</span> src={product.image_url} alt={product.name} /&gt;
+      &lt;div className=<span class="t-s">"card-body"</span>&gt;
+        &lt;span className=<span class="t-s">"card-category"</span>&gt;{product.category}&lt;/span&gt;
+        &lt;h3 className=<span class="t-s">"card-name"</span>&gt;{product.name}&lt;/h3&gt;
+        &lt;div className=<span class="t-s">"card-footer"</span>&gt;
+          &lt;span className=<span class="t-s">"price"</span>&gt;${product.price.toFixed(<span class="t-n">2</span>)}&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+  );
+}</code></pre>
+</figure>
+<figure class="code paste">
+  <figcaption><span class="file">client/src/components/CategoryFilter.tsx</span><span class="badge paste">copy and paste</span><button class="copy" data-target="c9" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c9" class="lang-ts"><span class="t-k">type</span> Props = {
+  categories: string[];
+  selected: string;
+  onSelect: (category: string) =&gt; <span class="t-k">void</span>;
+};
+
+<span class="t-k">export</span> <span class="t-k">default</span> <span class="t-k">function</span> CategoryFilter({ categories, selected, onSelect }: Props) {
+  <span class="t-k">return</span> (
+    &lt;div className=<span class="t-s">"filters"</span>&gt;
+      {categories.map((category) =&gt; (
+        &lt;button
+          key={category}
+          className={category === selected ? <span class="t-s">"chip active"</span> : <span class="t-s">"chip"</span>}
+          onClick={() =&gt; onSelect(category)}
+        &gt;
+          {category}
+        &lt;/button&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}</code></pre>
+</figure>
+<h2 id="step-1-list">3. The list (type this)</h2>
+<p><code>map</code> turns an array of data into an array of components. Every item needs a <code>key</code>, which lets React know which item is which.</p>
+<figure class="code type">
+  <figcaption><span class="file">client/src/components/ProductList.tsx</span><span class="badge type">type along</span><button class="copy" data-target="c10" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c10" class="lang-ts"><span class="t-k">import</span> <span class="t-k">type</span> { Product } <span class="t-k">from</span> <span class="t-s">"../types"</span>;
+<span class="t-k">import</span> ProductCard <span class="t-k">from</span> <span class="t-s">"./ProductCard"</span>;
+
+<span class="t-k">type</span> Props = {
+  products: Product[];
+};
+
+<span class="t-k">export</span> <span class="t-k">default</span> <span class="t-k">function</span> ProductList({ products }: Props) {
+  <span class="t-k">return</span> (
+    &lt;div className=<span class="t-s">"grid"</span>&gt;
+      {products.map((product) =&gt; (
+        &lt;ProductCard key={product.id} product={product} /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}</code></pre>
+</figure>
+<h2 id="step-1-filter">4. The filtering logic (type this)</h2>
+<p>The selected category is <b>local state</b>: it lives in this component and nobody else needs it.</p>
+<figure class="code type">
+  <figcaption><span class="file">client/src/App.tsx</span><span class="badge type">type along</span><button class="copy" data-target="c11" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c11" class="lang-ts"><span class="t-k">import</span> { useState } <span class="t-k">from</span> <span class="t-s">"react"</span>;
+<span class="t-k">import</span> CategoryFilter <span class="t-k">from</span> <span class="t-s">"./components/CategoryFilter"</span>;
+<span class="t-k">import</span> ProductList <span class="t-k">from</span> <span class="t-s">"./components/ProductList"</span>;
+<span class="t-k">import</span> { CATEGORIES } <span class="t-k">from</span> <span class="t-s">"./constants"</span>;
+<span class="t-k">import</span> { sampleProducts } <span class="t-k">from</span> <span class="t-s">"./data/sampleProducts"</span>;
+
+<span class="t-k">export</span> <span class="t-k">default</span> <span class="t-k">function</span> App() {
+  <span class="t-k">const</span> [category, setCategory] = useState(<span class="t-s">"All"</span>);
+
+  <span class="t-k">const</span> products =
+    category === <span class="t-s">"All"</span> ? sampleProducts : sampleProducts.filter((product) =&gt; product.category === category);
+
+  <span class="t-k">return</span> (
+    &lt;&gt;
+      &lt;header className=<span class="t-s">"header"</span>&gt;
+        &lt;div className=<span class="t-s">"brand"</span>&gt;
+          &lt;span className=<span class="t-s">"brand-mark"</span>&gt;M&lt;/span&gt; Mini Shop
+        &lt;/div&gt;
+      &lt;/header&gt;
+
+      &lt;main className=<span class="t-s">"main"</span>&gt;
+        &lt;h1 className=<span class="t-s">"page-title"</span>&gt;{category === <span class="t-s">"All"</span> ? <span class="t-s">"All products"</span> : category}&lt;/h1&gt;
+        &lt;p className=<span class="t-s">"page-subtitle"</span>&gt;{products.length} products&lt;/p&gt;
+        &lt;CategoryFilter categories={CATEGORIES} selected={category} onSelect={setCategory} /&gt;
+        &lt;ProductList products={products} /&gt;
+      &lt;/main&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+</figure>
+<ul><li><code>useState("All")</code> remembers the selected category between renders.</li><li><code>products</code> is <b>derived</b> from the sample data and the category. We never store it separately.</li><li>Clicking a chip calls <code>setCategory</code>, React re-renders, and the list changes.</li></ul>
+<aside class="callout checkpoint"><strong>Checkpoint</strong><p>Twelve products with pictures. Clicking <b>Electronics</b> shows 3, <b>Home</b> shows 3, and <b>All</b> brings back all 12. The title and the count change with the filter.</p></aside>
+<aside class="say presenter"><strong>Say</strong>Local state: one component owns it. We will see the opposite (state shared by many components) in step 8. Paste the small pieces, but have them type <code>ProductList</code> and the filter logic in <code>App</code>.</aside>
+<h2 id="step-1-catchup">Fell behind? Catch up</h2>
+<p>Jump to the finished state of this step. This discards your local changes in the working folder.</p>
+<figure class="code ">
+  <figcaption><span class="file">Terminal</span><button class="copy" data-target="c12" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c12" class="lang-bash">git checkout -f step-<span class="t-n">1</span>-ui-sample-data</code></pre>
+</figure>
+<p>Want to keep your own work first? Run <code>git stash -u</code> before the checkout.</p>
+  </section>
+<section class="page" id="step-2">
+    <div class="kicker">Step 2</div>
+    <h1>The server, health and CORS</h1>
+    <p class="lead">Start the Node app. Add a health check, a list endpoint that returns an empty array, and learn why the browser blocks you without CORS.</p>
+    <div class="meta"><span><b>Time</b> 0:50 to 1:10 (20 min)</span><span><b>Branch at the end</b> <code>step-2-server-cors</code></span><span><b>Topics</b> Express routing, health checks, CORS</span></div>
+    <details class="changed"><summary>Files that change in this step (4)</summary><ul><li><span class="st st-A">new</span> <code>server/src/controllers/products.ts</code></li><li><span class="st st-A">new</span> <code>server/src/index.ts</code></li><li><span class="st st-A">new</span> <code>server/src/routes/index.ts</code></li><li><span class="st st-A">new</span> <code>server/src/routes/products.ts</code></li></ul></details>
+<h2 id="step-2-config">1. The config (already there)</h2>
+<figure class="code ">
+  <figcaption><span class="file">server/src/config.ts</span><button class="copy" data-target="c13" type="button">Copy</button></figcaption>
+  <p class="code-note">It reads the port and the allowed website from <code>server/.env</code>, with sensible defaults.</p>
+  <pre><code id="c13" class="lang-ts"><span class="t-k">import</span> <span class="t-s">"dotenv/config"</span>;
+
+<span class="t-k">export</span> <span class="t-k">const</span> config = {
+  port: Number(process.env.PORT ?? <span class="t-n">3001</span>),
+  clientOrigin: process.env.CLIENT_ORIGIN ?? <span class="t-s">"http://localhost:5173"</span>,
+};</code></pre>
+</figure>
+<p>Create your env file for the server (we fill in the database later):</p>
+<figure class="code ">
+  <figcaption><span class="file">Terminal</span><button class="copy" data-target="c14" type="button">Copy</button></figcaption>
+  <p class="code-note">On PowerShell: copy server\.env.example server\.env</p>
+  <pre><code id="c14" class="lang-bash">cp server/.env.example server/.env</code></pre>
+</figure>
+<h2 id="step-2-health">2. The first endpoint: health</h2>
+<p>Create <code>server/src/index.ts</code> with only the server and the router. We add CORS in a minute, on purpose.</p>
+<figure class="code type">
+  <figcaption><span class="file">server/src/index.ts (first version)</span><span class="badge type">type along</span><button class="copy" data-target="c15" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c15" class="lang-ts"><span class="t-k">import</span> express <span class="t-k">from</span> <span class="t-s">"express"</span>;
+<span class="t-k">import</span> { config } <span class="t-k">from</span> <span class="t-s">"./config.js"</span>;
+<span class="t-k">import</span> { apiRouter } <span class="t-k">from</span> <span class="t-s">"./routes/index.js"</span>;
+
+<span class="t-k">const</span> app = express();
+
+app.use(<span class="t-s">"/api"</span>, apiRouter);
+
+app.listen(config.port, () =&gt; {
+  console.log(<span class="t-s">`API listening on http://localhost:${config.port}`</span>);
+});</code></pre>
+</figure>
+<figure class="code type">
+  <figcaption><span class="file">server/src/routes/index.ts</span><span class="badge type">type along</span><button class="copy" data-target="c16" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c16" class="lang-ts"><span class="t-k">import</span> { Router } <span class="t-k">from</span> <span class="t-s">"express"</span>;
+<span class="t-k">import</span> { productsRouter } <span class="t-k">from</span> <span class="t-s">"./products.js"</span>;
+
+<span class="t-k">export</span> <span class="t-k">const</span> apiRouter = Router();
+
+apiRouter.get(<span class="t-s">"/health"</span>, (_req, res) =&gt; {
+  res.json({ status: <span class="t-s">"ok"</span> });
+});
+
+apiRouter.use(<span class="t-s">"/products"</span>, productsRouter);</code></pre>
+</figure>
+<p>Run <code>npm run dev</code> and open <a href='http://localhost:3001/api/health'>http://localhost:3001/api/health</a>.</p>
+<aside class="callout checkpoint"><strong>Checkpoint</strong><p>The page shows <code>{"status":"ok"}</code>.</p></aside>
+<aside class="say presenter"><strong>Say</strong>Why a health endpoint? Hosting platforms and uptime monitors call it every minute. If it answers 200, the server counts as up, and the share of successful calls is the uptime percentage on status pages. It is a cheap way to know a server is alive without touching the database.</aside>
+<h2 id="step-2-list">3. A list endpoint that returns nothing yet</h2>
+<p>A route says <i>which URL and method</i>. A controller says <i>what to do</i>. Keeping them apart makes each file small.</p>
+<figure class="code type">
+  <figcaption><span class="file">server/src/routes/products.ts</span><span class="badge type">type along</span><button class="copy" data-target="c17" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c17" class="lang-ts"><span class="t-k">import</span> { Router } <span class="t-k">from</span> <span class="t-s">"express"</span>;
+<span class="t-k">import</span> { listProducts } <span class="t-k">from</span> <span class="t-s">"../controllers/products.js"</span>;
+
+<span class="t-k">export</span> <span class="t-k">const</span> productsRouter = Router();
+
+productsRouter.get(<span class="t-s">"/"</span>, listProducts);</code></pre>
+</figure>
+<figure class="code type">
+  <figcaption><span class="file">server/src/controllers/products.ts</span><span class="badge type">type along</span><button class="copy" data-target="c18" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c18" class="lang-ts"><span class="t-k">import</span> <span class="t-k">type</span> { Request, Response } <span class="t-k">from</span> <span class="t-s">"express"</span>;
+
+<span class="t-k">export</span> <span class="t-k">function</span> listProducts(_req: Request, res: Response) {
+  res.json([]);
+}</code></pre>
+</figure>
+<aside class="callout checkpoint"><strong>Checkpoint</strong><p><a href='http://localhost:3001/api/products'>http://localhost:3001/api/products</a> shows <code>[]</code>.</p></aside>
+<h2 id="step-2-cors">4. CORS: see it break first</h2>
+<p>The page runs on <code>localhost:5173</code> and the API on <code>localhost:3001</code>. To the browser these are two different websites. Open <a href='http://localhost:5173'>http://localhost:5173</a>, press <b>F12</b>, go to the <b>Console</b> tab and paste:</p>
+<figure class="code ">
+  <figcaption><span class="file">Browser console</span><button class="copy" data-target="c19" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c19" class="lang-ts">fetch(<span class="t-s">'http://localhost:3001/api/products'</span>).then(r =&gt; r.json()).then(console.log)</code></pre>
+</figure>
+<p>You get a red error saying the request was <b>blocked by CORS policy</b>. The server answered fine. The <b>browser</b> refused to hand the answer to the page.</p>
+<aside class="say presenter"><strong>Say</strong>The browser asks: may this website read answers from you? Without a reply it says no. This protects users, because another website cannot silently read your data with your login. Postman and curl are not browsers, so they never show this error.</aside>
+<h2 id="step-2-fix">5. Whitelist our website</h2>
+<figure class="code type">
+  <figcaption><span class="file">server/src/index.ts</span><span class="badge type">type along</span><button class="copy" data-target="c20" type="button">Copy</button></figcaption>
+  <p class="code-note">Add the <code>cors</code> import and the <code>app.use(cors(...))</code> line. The server restarts by itself.</p>
+  <pre><code id="c20" class="lang-ts"><span class="t-k">import</span> cors <span class="t-k">from</span> <span class="t-s">"cors"</span>;
+<span class="t-k">import</span> express <span class="t-k">from</span> <span class="t-s">"express"</span>;
+<span class="t-k">import</span> { config } <span class="t-k">from</span> <span class="t-s">"./config.js"</span>;
+<span class="t-k">import</span> { apiRouter } <span class="t-k">from</span> <span class="t-s">"./routes/index.js"</span>;
+
+<span class="t-k">const</span> app = express();
+
+app.use(cors({ origin: config.clientOrigin }));
+
+app.use(<span class="t-s">"/api"</span>, apiRouter);
+
+app.listen(config.port, () =&gt; {
+  console.log(<span class="t-s">`API listening on http://localhost:${config.port}`</span>);
+});</code></pre>
+</figure>
+<p>Run the same line in the console again.</p>
+<aside class="callout checkpoint"><strong>Checkpoint</strong><p>The console prints <code>[]</code>. Only the website in <code>CLIENT_ORIGIN</code> may read the answer. Any other website still gets blocked.</p></aside>
+<h2 id="step-2-catchup">Fell behind? Catch up</h2>
+<p>Jump to the finished state of this step. This discards your local changes in the working folder.</p>
+<figure class="code ">
+  <figcaption><span class="file">Terminal</span><button class="copy" data-target="c21" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c21" class="lang-bash">git checkout -f step-<span class="t-n">2</span>-server-cors</code></pre>
+</figure>
+<p>Want to keep your own work first? Run <code>git stash -u</code> before the checkout.</p>
+  </section>
+<section class="page" id="step-3">
+    <div class="kicker">Step 3</div>
+    <h1>The database and seeding</h1>
+    <p class="lead">Create a Neon database, connect to it, fill it with sample products, and serve them from the API.</p>
+    <div class="meta"><span><b>Time</b> 1:20 to 1:50 (30 min)</span><span><b>Branch at the end</b> <code>step-3-database</code></span><span><b>Topics</b> Neon, connections, env files, seeding</span></div>
+    <details class="changed"><summary>Files that change in this step (6)</summary><ul><li><span class="st st-A">new</span> <code>server/scripts/seed.ts</code></li><li><span class="st st-M">edited</span> <code>server/src/config.ts</code></li><li><span class="st st-M">edited</span> <code>server/src/controllers/products.ts</code></li><li><span class="st st-A">new</span> <code>server/src/db/index.ts</code></li><li><span class="st st-A">new</span> <code>server/src/db/postgres.ts</code></li><li><span class="st st-A">new</span> <code>server/src/types.ts</code></li></ul></details>
+<h2 id="step-3-neon">1. Create the database on Neon</h2>
+<ol><li>Open the Neon dashboard and click <b>New project</b>. Any name, the region closest to you.</li><li>On the project page click <b>Connect</b>.</li><li>Copy the <b>connection string</b>. It starts with <code>postgresql://</code>.</li><li>Open <code>server/.env</code> and paste it after <code>DATABASE_URL=</code>. No quotes, no spaces.</li></ol>
+<figure class="code ">
+  <figcaption><span class="file">server/.env</span><button class="copy" data-target="c22" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c22" class="lang-env">PORT=<span class="t-n">3001</span>
+CLIENT_ORIGIN=http://localhost:<span class="t-n">5173</span>
+
+DATABASE_URL=postgresql://user:password@ep-example-<span class="t-n">123456</span>-pooler.region.aws.neon.tech/neondb?sslmode=require</code></pre>
+</figure>
+<aside class="callout warn"><strong>Keep it secret</strong><p>The connection string contains your password. <code>.env</code> is listed in <code>.gitignore</code>, so Git never commits it. Never paste it into chat or screenshots.</p></aside>
+<aside class="say presenter"><strong>Say</strong>Start the env files talk here, briefly: config that changes per machine, or is secret, lives outside the code. We come back to it in step 7.</aside>
+<h2 id="step-3-code">2. Read it in the config</h2>
+<figure class="code type">
+  <figcaption><span class="file">server/src/config.ts</span><span class="badge type">type along</span><button class="copy" data-target="c23" type="button">Copy</button></figcaption>
+  <p class="code-note">One new line: <code>databaseUrl</code>.</p>
+  <pre><code id="c23" class="lang-ts"><span class="t-k">import</span> <span class="t-s">"dotenv/config"</span>;
+
+<span class="t-k">export</span> <span class="t-k">const</span> config = {
+  port: Number(process.env.PORT ?? <span class="t-n">3001</span>),
+  clientOrigin: process.env.CLIENT_ORIGIN ?? <span class="t-s">"http://localhost:5173"</span>,
+  databaseUrl: process.env.DATABASE_URL ?? <span class="t-s">""</span>,
+};</code></pre>
+</figure>
+<h2 id="step-3-connection">3. The database connection</h2>
+<p>A <b>pool</b> keeps a few connections open and reuses them, because opening a connection for every request is slow.</p>
+<figure class="code type">
+  <figcaption><span class="file">server/src/db/index.ts</span><span class="badge type">type along</span><button class="copy" data-target="c24" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c24" class="lang-ts"><span class="t-k">import</span> pg <span class="t-k">from</span> <span class="t-s">"pg"</span>;
+<span class="t-k">import</span> { config } <span class="t-k">from</span> <span class="t-s">"../config.js"</span>;
+
+<span class="t-k">if</span> (!config.databaseUrl) {
+  <span class="t-k">throw</span> <span class="t-k">new</span> Error(<span class="t-s">"DATABASE_URL is missing. Add your Neon connection string to server/.env"</span>);
+}
+
+<span class="t-k">export</span> <span class="t-k">const</span> pool = <span class="t-k">new</span> pg.Pool({ connectionString: config.databaseUrl });</code></pre>
+</figure>
+<figure class="code paste">
+  <figcaption><span class="file">server/src/types.ts</span><span class="badge paste">copy and paste</span><button class="copy" data-target="c25" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c25" class="lang-ts"><span class="t-k">export</span> <span class="t-k">type</span> Product = {
+  id: number;
+  name: string;
+  price: number;
+  category: string;
+  image_url: string;
+};</code></pre>
+</figure>
+<h2 id="step-3-postgres">4. The Postgres file: our first query</h2>
+<figure class="code type">
+  <figcaption><span class="file">server/src/db/postgres.ts</span><span class="badge type">type along</span><button class="copy" data-target="c26" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c26" class="lang-ts"><span class="t-k">import</span> <span class="t-k">type</span> { Product } <span class="t-k">from</span> <span class="t-s">"../types.js"</span>;
+<span class="t-k">import</span> { pool } <span class="t-k">from</span> <span class="t-s">"./index.js"</span>;
+
+<span class="t-c">// NUMERIC comes back from Postgres as a string, so we cast it to a float in SQL</span>
+<span class="t-k">const</span> COLUMNS = <span class="t-s">"id, name, price::float8 AS price, category, image_url"</span>;
+
+<span class="t-k">export</span> <span class="t-k">async</span> <span class="t-k">function</span> getProducts() {
+  <span class="t-k">const</span> { rows } = <span class="t-k">await</span> pool.query&lt;Product&gt;(<span class="t-s">`SELECT ${COLUMNS} FROM products ORDER BY id`</span>);
+  <span class="t-k">return</span> rows;
+}</code></pre>
+</figure>
+<ul><li><code>SELECT ... FROM products ORDER BY id</code> reads every row, in order.</li><li>Postgres sends <code>NUMERIC</code> prices as strings, so <code>price::float8</code> converts them to numbers in SQL.</li></ul>
+<h2 id="step-3-seed">5. Seed the database</h2>
+<p><b>Seeding</b> means filling a fresh database with starting data, so every student has the same products. The script creates the table, then inserts 12 products with public image links. Paste it, read it, then run it.</p>
+<figure class="code paste">
+  <figcaption><span class="file">server/scripts/seed.ts</span><span class="badge paste">copy and paste</span><button class="copy" data-target="c27" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c27" class="lang-ts"><span class="t-k">import</span> { pool } <span class="t-k">from</span> <span class="t-s">"../src/db/index.js"</span>;
+
+<span class="t-k">const</span> products = [
+  { name: <span class="t-s">"MacBook Pro 14"</span>, price: <span class="t-n">1999.99</span>, category: <span class="t-s">"Electronics"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/laptops/apple-macbook-pro-14-inch-space-grey/thumbnail.webp"</span> },
+  { name: <span class="t-s">"Asus Zenbook Pro"</span>, price: <span class="t-n">1799.99</span>, category: <span class="t-s">"Electronics"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/laptops/asus-zenbook-pro-dual-screen-laptop/thumbnail.webp"</span> },
+  { name: <span class="t-s">"iPhone 5s"</span>, price: <span class="t-n">199.99</span>, category: <span class="t-s">"Electronics"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/smartphones/iphone-5s/thumbnail.webp"</span> },
+  { name: <span class="t-s">"Check Shirt"</span>, price: <span class="t-n">29.99</span>, category: <span class="t-s">"Clothing"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/mens-shirts/blue-&amp;-black-check-shirt/thumbnail.webp"</span> },
+  { name: <span class="t-s">"Aorus T-Shirt"</span>, price: <span class="t-n">24.99</span>, category: <span class="t-s">"Clothing"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/mens-shirts/gigabyte-aorus-men-tshirt/thumbnail.webp"</span> },
+  { name: <span class="t-s">"Black Gown"</span>, price: <span class="t-n">129.99</span>, category: <span class="t-s">"Clothing"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/womens-dresses/black-women's-gown/thumbnail.webp"</span> },
+  { name: <span class="t-s">"Colombo Bed"</span>, price: <span class="t-n">1899.99</span>, category: <span class="t-s">"Home"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/furniture/annibale-colombo-bed/thumbnail.webp"</span> },
+  { name: <span class="t-s">"Colombo Sofa"</span>, price: <span class="t-n">2499.99</span>, category: <span class="t-s">"Home"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/furniture/annibale-colombo-sofa/thumbnail.webp"</span> },
+  { name: <span class="t-s">"Decoration Swing"</span>, price: <span class="t-n">59.99</span>, category: <span class="t-s">"Home"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/home-decoration/decoration-swing/thumbnail.webp"</span> },
+  { name: <span class="t-s">"Black Sunglasses"</span>, price: <span class="t-n">29.99</span>, category: <span class="t-s">"Accessories"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/sunglasses/black-sun-glasses/thumbnail.webp"</span> },
+  { name: <span class="t-s">"Classic Sunglasses"</span>, price: <span class="t-n">24.99</span>, category: <span class="t-s">"Accessories"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/sunglasses/classic-sun-glasses/thumbnail.webp"</span> },
+  { name: <span class="t-s">"Leather Belt Watch"</span>, price: <span class="t-n">89.99</span>, category: <span class="t-s">"Accessories"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/mens-watches/brown-leather-belt-watch/thumbnail.webp"</span> },
+];
+
+<span class="t-k">async</span> <span class="t-k">function</span> seed() {
+  <span class="t-k">if</span> (process.argv[<span class="t-n">2</span>] === <span class="t-s">"reset"</span>) {
+    <span class="t-k">await</span> pool.query(<span class="t-s">"DROP TABLE IF EXISTS products"</span>);
+  }
+
+  <span class="t-k">await</span> pool.query(<span class="t-s">`
+    CREATE TABLE IF NOT EXISTS products (
+      id SERIAL PRIMARY KEY,
+      name TEXT NOT NULL,
+      price NUMERIC(10, 2) NOT NULL CHECK (price &gt; 0),
+      category TEXT NOT NULL,
+      image_url TEXT NOT NULL
+    )
+  `</span>);
+
+  <span class="t-k">const</span> { rows } = <span class="t-k">await</span> pool.query(<span class="t-s">"SELECT COUNT(*)::int AS count FROM products"</span>);
+  <span class="t-k">if</span> (rows[<span class="t-n">0</span>].count &gt; <span class="t-n">0</span>) {
+    console.log(<span class="t-s">`The table already has ${rows[0].count} products, nothing to insert.`</span>);
+    <span class="t-k">return</span>;
+  }
+
+  <span class="t-k">for</span> (<span class="t-k">const</span> p <span class="t-k">of</span> products) {
+    <span class="t-k">await</span> pool.query(<span class="t-s">"INSERT INTO products (name, price, category, image_url) VALUES ($1, $2, $3, $4)"</span>, [
+      p.name,
+      p.price,
+      p.category,
+      p.image_url,
+    ]);
+  }
+  console.log(<span class="t-s">`Created the table and inserted ${products.length} products.`</span>);
+}
+
+seed()
+  .<span class="t-k">catch</span>((err) =&gt; {
+    console.error(<span class="t-s">"Seeding failed:"</span>, err.message);
+    process.exitCode = <span class="t-n">1</span>;
+  })
+  .<span class="t-k">finally</span>(() =&gt; pool.end());</code></pre>
+</figure>
+<figure class="code ">
+  <figcaption><span class="file">Terminal</span><button class="copy" data-target="c28" type="button">Copy</button></figcaption>
+  <p class="code-note">Safe to run again: it only inserts when the table is empty. Use npm run db:reset to wipe and refill it.</p>
+  <pre><code id="c28" class="lang-bash">npm run db:seed</code></pre>
+</figure>
+<aside class="callout tip"><strong>See it in Neon</strong><p>In the Neon dashboard open <b>Tables</b> (or the <b>SQL Editor</b> and run <code>SELECT * FROM products;</code>). The 12 rows are there.</p></aside>
+<h2 id="step-3-serve">6. Serve it from the API</h2>
+<figure class="code type">
+  <figcaption><span class="file">server/src/controllers/products.ts</span><span class="badge type">type along</span><button class="copy" data-target="c29" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c29" class="lang-ts"><span class="t-k">import</span> <span class="t-k">type</span> { Request, Response } <span class="t-k">from</span> <span class="t-s">"express"</span>;
+<span class="t-k">import</span> { getProducts } <span class="t-k">from</span> <span class="t-s">"../db/postgres.js"</span>;
+
+<span class="t-k">export</span> <span class="t-k">async</span> <span class="t-k">function</span> listProducts(_req: Request, res: Response) {
+  res.json(<span class="t-k">await</span> getProducts());
+}</code></pre>
+</figure>
+<aside class="callout checkpoint"><strong>Checkpoint</strong><p><a href='http://localhost:3001/api/products'>http://localhost:3001/api/products</a> now shows 12 products, with prices as numbers.</p></aside>
+<div class="table-wrap"><table><thead><tr><th>Symptom</th><th>Fix</th></tr></thead><tbody><tr><td>The server stops with <i>DATABASE_URL is missing</i></td><td>Paste the connection string into <code>server/.env</code> and save</td></tr><tr><td>Connection error or password failed</td><td>Copy the string again from Neon, with no quotes or trailing spaces</td></tr><tr><td>An SSL mode warning appears in the terminal</td><td>Printed by the database library with Neon. It is harmless</td></tr></tbody></table></div>
+<h2 id="step-3-catchup">Fell behind? Catch up</h2>
+<p>Jump to the finished state of this step. This discards your local changes in the working folder.</p>
+<figure class="code ">
+  <figcaption><span class="file">Terminal</span><button class="copy" data-target="c30" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c30" class="lang-bash">git checkout -f step-<span class="t-n">3</span>-database</code></pre>
+</figure>
+<p>Want to keep your own work first? Run <code>git stash -u</code> before the checkout.</p>
+  </section>
+<section class="page" id="step-4">
+    <div class="kicker">Step 4</div>
+    <h1>The api layer and a custom hook</h1>
+    <p class="lead">Stop using sample data. Fetch the real products, first inside a component, then extract a hook and see why that is better.</p>
+    <div class="meta"><span><b>Time</b> 1:50 to 2:10 (20 min)</span><span><b>Branch at the end</b> <code>step-4-api-hook</code></span><span><b>Topics</b> api layer, custom hooks, separating logic from UI</span></div>
+    <details class="changed"><summary>Files that change in this step (4)</summary><ul><li><span class="st st-M">edited</span> <code>client/src/App.tsx</code></li><li><span class="st st-A">new</span> <code>client/src/api/products.ts</code></li><li><span class="st st-D">removed</span> <code>client/src/data/sampleProducts.ts</code></li><li><span class="st st-A">new</span> <code>client/src/hooks/useProducts.ts</code></li></ul></details>
+<h2 id="step-4-api">1. The api layer</h2>
+<p>One file knows how to talk to the server. Every other file just calls its functions.</p>
+<figure class="code type">
+  <figcaption><span class="file">client/src/api/products.ts</span><span class="badge type">type along</span><button class="copy" data-target="c31" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c31" class="lang-ts"><span class="t-k">import</span> <span class="t-k">type</span> { Product } <span class="t-k">from</span> <span class="t-s">"../types"</span>;
+
+<span class="t-k">const</span> API_URL = <span class="t-k">import</span>.meta.env.VITE_API_URL ?? <span class="t-s">"http://localhost:3001/api"</span>;
+
+<span class="t-k">export</span> <span class="t-k">async</span> <span class="t-k">function</span> fetchProducts(): Promise&lt;Product[]&gt; {
+  <span class="t-k">let</span> res: Response;
+  <span class="t-k">try</span> {
+    res = <span class="t-k">await</span> fetch(<span class="t-s">`${API_URL}/products`</span>);
+  } <span class="t-k">catch</span> {
+    <span class="t-k">throw</span> <span class="t-k">new</span> Error(<span class="t-s">"Cannot reach the API. Is the server running?"</span>);
+  }
+  <span class="t-k">if</span> (!res.ok) <span class="t-k">throw</span> <span class="t-k">new</span> Error(<span class="t-s">"Could not load products"</span>);
+  <span class="t-k">return</span> res.json();
+}</code></pre>
+</figure>
+<h2 id="step-4-inline">2. Use it right away, inside the component</h2>
+<p>First the simple way. In <code>App.tsx</code> replace the sample data with this:</p>
+<figure class="code type">
+  <figcaption><span class="file">client/src/App.tsx (first version)</span><span class="badge type">type along</span><button class="copy" data-target="c32" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c32" class="lang-ts"><span class="t-k">const</span> [allProducts, setAllProducts] = useState&lt;Product[]&gt;([]);
+<span class="t-k">const</span> [category, setCategory] = useState(<span class="t-s">"All"</span>);
+
+useEffect(() =&gt; {
+  fetchProducts().then(setAllProducts);
+}, []);
+
+<span class="t-k">const</span> products =
+  category === <span class="t-s">"All"</span> ? allProducts : allProducts.filter((product) =&gt; product.category === category);</code></pre>
+</figure>
+<p>It works: the page now shows the 12 products from your database. Delete <code>client/src/data/sampleProducts.ts</code>, because nothing needs it any more.</p>
+<aside class="say presenter"><strong>Say</strong>Look at App now. It fetches, keeps state, filters, and draws. Four jobs in one place. If we add a form or a cart it only gets worse. So we split the business logic from the UI.</aside>
+<h2 id="step-4-hook">3. Extract a custom hook</h2>
+<p>A custom hook is a function that uses state and effects, and hands the results to a component.</p>
+<figure class="code type">
+  <figcaption><span class="file">client/src/hooks/useProducts.ts</span><span class="badge type">type along</span><button class="copy" data-target="c33" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c33" class="lang-ts"><span class="t-k">import</span> { useEffect, useState } <span class="t-k">from</span> <span class="t-s">"react"</span>;
+<span class="t-k">import</span> { fetchProducts } <span class="t-k">from</span> <span class="t-s">"../api/products"</span>;
+<span class="t-k">import</span> <span class="t-k">type</span> { Product } <span class="t-k">from</span> <span class="t-s">"../types"</span>;
+
+<span class="t-k">export</span> <span class="t-k">function</span> useProducts() {
+  <span class="t-k">const</span> [allProducts, setAllProducts] = useState&lt;Product[]&gt;([]);
+  <span class="t-k">const</span> [category, setCategory] = useState(<span class="t-s">"All"</span>);
+  <span class="t-k">const</span> [loading, setLoading] = useState(<span class="t-k">true</span>);
+  <span class="t-k">const</span> [error, setError] = useState&lt;string | <span class="t-k">null</span>&gt;(<span class="t-k">null</span>);
+
+  useEffect(() =&gt; {
+    fetchProducts()
+      .then(setAllProducts)
+      .<span class="t-k">catch</span>((err: Error) =&gt; setError(err.message))
+      .<span class="t-k">finally</span>(() =&gt; setLoading(<span class="t-k">false</span>));
+  }, []);
+
+  <span class="t-k">const</span> products =
+    category === <span class="t-s">"All"</span> ? allProducts : allProducts.filter((product) =&gt; product.category === category);
+
+  <span class="t-k">return</span> { products, category, setCategory, loading, error };
+}</code></pre>
+</figure>
+<figure class="code type">
+  <figcaption><span class="file">client/src/App.tsx</span><span class="badge type">type along</span><button class="copy" data-target="c34" type="button">Copy</button></figcaption>
+  <p class="code-note">Now <code>App</code> only decides what to draw.</p>
+  <pre><code id="c34" class="lang-ts"><span class="t-k">import</span> CategoryFilter <span class="t-k">from</span> <span class="t-s">"./components/CategoryFilter"</span>;
+<span class="t-k">import</span> ProductList <span class="t-k">from</span> <span class="t-s">"./components/ProductList"</span>;
+<span class="t-k">import</span> { CATEGORIES } <span class="t-k">from</span> <span class="t-s">"./constants"</span>;
+<span class="t-k">import</span> { useProducts } <span class="t-k">from</span> <span class="t-s">"./hooks/useProducts"</span>;
+
+<span class="t-k">export</span> <span class="t-k">default</span> <span class="t-k">function</span> App() {
+  <span class="t-k">const</span> { products, category, setCategory, loading, error } = useProducts();
+
+  <span class="t-k">return</span> (
+    &lt;&gt;
+      &lt;header className=<span class="t-s">"header"</span>&gt;
+        &lt;div className=<span class="t-s">"brand"</span>&gt;
+          &lt;span className=<span class="t-s">"brand-mark"</span>&gt;M&lt;/span&gt; Mini Shop
+        &lt;/div&gt;
+      &lt;/header&gt;
+
+      &lt;main className=<span class="t-s">"main"</span>&gt;
+        &lt;h1 className=<span class="t-s">"page-title"</span>&gt;{category === <span class="t-s">"All"</span> ? <span class="t-s">"All products"</span> : category}&lt;/h1&gt;
+        &lt;p className=<span class="t-s">"page-subtitle"</span>&gt;{loading ? <span class="t-s">"Loading..."</span> : <span class="t-s">`${products.length} products`</span>}&lt;/p&gt;
+        &lt;CategoryFilter categories={CATEGORIES} selected={category} onSelect={setCategory} /&gt;
+        {error &amp;&amp; &lt;p className=<span class="t-s">"status error"</span>&gt;{error}&lt;/p&gt;}
+        {!loading &amp;&amp; !error &amp;&amp; &lt;ProductList products={products} /&gt;}
+      &lt;/main&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+</figure>
+<ul><li><code>useProducts</code> owns the data, the filter, loading and errors.</li><li><code>App</code> reads like a sentence: get the products, then draw them.</li><li>The hook calls the api layer, never <code>fetch</code> directly. If the server URL changes, only one file changes.</li></ul>
+<aside class="callout checkpoint"><strong>Checkpoint</strong><p>The page shows <i>Loading...</i> briefly, then the 12 products from your database, and the filters work. Stop the server (Ctrl+C in the terminal) and reload: you see a red error line instead of a blank page. Start it again.</p></aside>
+<h2 id="step-4-catchup">Fell behind? Catch up</h2>
+<p>Jump to the finished state of this step. This discards your local changes in the working folder.</p>
+<figure class="code ">
+  <figcaption><span class="file">Terminal</span><button class="copy" data-target="c35" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c35" class="lang-bash">git checkout -f step-<span class="t-n">4</span>-api-hook</code></pre>
+</figure>
+<p>Want to keep your own work first? Run <code>git stash -u</code> before the checkout.</p>
+  </section>
+<section class="page" id="step-5">
+    <div class="kicker">Step 5</div>
+    <h1>Add a product (and break things)</h1>
+    <p class="lead">Build the form and the create endpoint. Then push a faulty product on purpose and see what happens when nothing checks the data.</p>
+    <div class="meta"><span><b>Time</b> 2:10 to 2:30 (20 min)</span><span><b>Branch at the end</b> <code>step-5-add-product</code></span><span><b>Topics</b> forms, POST requests, why unchecked data is dangerous</span></div>
+    <details class="changed"><summary>Files that change in this step (10)</summary><ul><li><span class="st st-M">edited</span> <code>client/src/App.tsx</code></li><li><span class="st st-M">edited</span> <code>client/src/api/products.ts</code></li><li><span class="st st-A">new</span> <code>client/src/components/AddProductForm.tsx</code></li><li><span class="st st-M">edited</span> <code>client/src/hooks/useProducts.ts</code></li><li><span class="st st-M">edited</span> <code>client/src/types.ts</code></li><li><span class="st st-M">edited</span> <code>server/src/controllers/products.ts</code></li><li><span class="st st-M">edited</span> <code>server/src/db/postgres.ts</code></li><li><span class="st st-M">edited</span> <code>server/src/index.ts</code></li><li><span class="st st-M">edited</span> <code>server/src/routes/products.ts</code></li><li><span class="st st-M">edited</span> <code>server/src/types.ts</code></li></ul></details>
+<h2 id="step-5-server">1. The create endpoint</h2>
+<p>Add a second query. <code>$1</code> to <code>$4</code> are placeholders: the driver sends the values separately from the SQL, which stops SQL injection. <b>Never build SQL by gluing strings together.</b></p>
+<figure class="code type">
+  <figcaption><span class="file">server/src/db/postgres.ts</span><span class="badge type">type along</span><button class="copy" data-target="c36" type="button">Copy</button></figcaption>
+  <p class="code-note">Add <code>insertProduct</code> at the bottom, and <code>NewProduct</code> to the import.</p>
+  <pre><code id="c36" class="lang-ts"><span class="t-k">import</span> <span class="t-k">type</span> { NewProduct, Product } <span class="t-k">from</span> <span class="t-s">"../types.js"</span>;
+<span class="t-k">import</span> { pool } <span class="t-k">from</span> <span class="t-s">"./index.js"</span>;
+
+<span class="t-c">// NUMERIC comes back from Postgres as a string, so we cast it to a float in SQL</span>
+<span class="t-k">const</span> COLUMNS = <span class="t-s">"id, name, price::float8 AS price, category, image_url"</span>;
+
+<span class="t-k">export</span> <span class="t-k">async</span> <span class="t-k">function</span> getProducts() {
+  <span class="t-k">const</span> { rows } = <span class="t-k">await</span> pool.query&lt;Product&gt;(<span class="t-s">`SELECT ${COLUMNS} FROM products ORDER BY id`</span>);
+  <span class="t-k">return</span> rows;
+}
+
+<span class="t-k">export</span> <span class="t-k">async</span> <span class="t-k">function</span> insertProduct(input: NewProduct) {
+  <span class="t-k">const</span> { rows } = <span class="t-k">await</span> pool.query&lt;Product&gt;(
+    <span class="t-s">`INSERT INTO products (name, price, category, image_url)
+     VALUES ($1, $2, $3, $4)
+     RETURNING ${COLUMNS}`</span>,
+    [input.name, input.price, input.category, input.image_url],
+  );
+  <span class="t-k">return</span> rows[<span class="t-n">0</span>];
+}</code></pre>
+</figure>
+<figure class="code paste">
+  <figcaption><span class="file">server/src/types.ts</span><span class="badge paste">copy and paste</span><button class="copy" data-target="c37" type="button">Copy</button></figcaption>
+  <p class="code-note">One new line: <code>NewProduct</code>.</p>
+  <pre><code id="c37" class="lang-ts"><span class="t-k">export</span> <span class="t-k">type</span> Product = {
+  id: number;
+  name: string;
+  price: number;
+  category: string;
+  image_url: string;
+};
+
+<span class="t-k">export</span> <span class="t-k">type</span> NewProduct = Omit&lt;Product, <span class="t-s">"id"</span>&gt;;</code></pre>
+</figure>
+<figure class="code type">
+  <figcaption><span class="file">server/src/controllers/products.ts</span><span class="badge type">type along</span><button class="copy" data-target="c38" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c38" class="lang-ts"><span class="t-k">import</span> <span class="t-k">type</span> { Request, Response } <span class="t-k">from</span> <span class="t-s">"express"</span>;
+<span class="t-k">import</span> { getProducts, insertProduct } <span class="t-k">from</span> <span class="t-s">"../db/postgres.js"</span>;
+
+<span class="t-k">export</span> <span class="t-k">async</span> <span class="t-k">function</span> listProducts(_req: Request, res: Response) {
+  res.json(<span class="t-k">await</span> getProducts());
+}
+
+<span class="t-k">export</span> <span class="t-k">async</span> <span class="t-k">function</span> createProduct(req: Request, res: Response) {
+  <span class="t-k">const</span> product = <span class="t-k">await</span> insertProduct(req.body);
+  res.status(<span class="t-n">201</span>).json(product);
+}</code></pre>
+</figure>
+<figure class="code type">
+  <figcaption><span class="file">server/src/routes/products.ts</span><span class="badge type">type along</span><button class="copy" data-target="c39" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c39" class="lang-ts"><span class="t-k">import</span> { Router } <span class="t-k">from</span> <span class="t-s">"express"</span>;
+<span class="t-k">import</span> { createProduct, listProducts } <span class="t-k">from</span> <span class="t-s">"../controllers/products.js"</span>;
+
+<span class="t-k">export</span> <span class="t-k">const</span> productsRouter = Router();
+
+productsRouter.get(<span class="t-s">"/"</span>, listProducts);
+productsRouter.post(<span class="t-s">"/"</span>, createProduct);</code></pre>
+</figure>
+<figure class="code type">
+  <figcaption><span class="file">server/src/index.ts</span><span class="badge type">type along</span><button class="copy" data-target="c40" type="button">Copy</button></figcaption>
+  <p class="code-note">One new line: <code>app.use(express.json())</code>, so Express can read a JSON body.</p>
+  <pre><code id="c40" class="lang-ts"><span class="t-k">import</span> cors <span class="t-k">from</span> <span class="t-s">"cors"</span>;
+<span class="t-k">import</span> express <span class="t-k">from</span> <span class="t-s">"express"</span>;
+<span class="t-k">import</span> { config } <span class="t-k">from</span> <span class="t-s">"./config.js"</span>;
+<span class="t-k">import</span> { apiRouter } <span class="t-k">from</span> <span class="t-s">"./routes/index.js"</span>;
+
+<span class="t-k">const</span> app = express();
+
+app.use(cors({ origin: config.clientOrigin }));
+app.use(express.json());
+
+app.use(<span class="t-s">"/api"</span>, apiRouter);
+
+app.listen(config.port, () =&gt; {
+  console.log(<span class="t-s">`API listening on http://localhost:${config.port}`</span>);
+});</code></pre>
+</figure>
+<h2 id="step-5-client">2. The client side</h2>
+<figure class="code paste">
+  <figcaption><span class="file">client/src/types.ts</span><span class="badge paste">copy and paste</span><button class="copy" data-target="c41" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c41" class="lang-ts"><span class="t-k">export</span> <span class="t-k">type</span> Product = {
+  id: number;
+  name: string;
+  price: number;
+  category: string;
+  image_url: string;
+};
+
+<span class="t-k">export</span> <span class="t-k">type</span> NewProduct = Omit&lt;Product, <span class="t-s">"id"</span>&gt;;</code></pre>
+</figure>
+<figure class="code type">
+  <figcaption><span class="file">client/src/api/products.ts</span><span class="badge type">type along</span><button class="copy" data-target="c42" type="button">Copy</button></figcaption>
+  <p class="code-note">Add <code>createProduct</code> and the <code>NewProduct</code> import.</p>
+  <pre><code id="c42" class="lang-ts"><span class="t-k">import</span> <span class="t-k">type</span> { NewProduct, Product } <span class="t-k">from</span> <span class="t-s">"../types"</span>;
+
+<span class="t-k">const</span> API_URL = <span class="t-k">import</span>.meta.env.VITE_API_URL ?? <span class="t-s">"http://localhost:3001/api"</span>;
+
+<span class="t-k">export</span> <span class="t-k">async</span> <span class="t-k">function</span> fetchProducts(): Promise&lt;Product[]&gt; {
+  <span class="t-k">let</span> res: Response;
+  <span class="t-k">try</span> {
+    res = <span class="t-k">await</span> fetch(<span class="t-s">`${API_URL}/products`</span>);
+  } <span class="t-k">catch</span> {
+    <span class="t-k">throw</span> <span class="t-k">new</span> Error(<span class="t-s">"Cannot reach the API. Is the server running?"</span>);
+  }
+  <span class="t-k">if</span> (!res.ok) <span class="t-k">throw</span> <span class="t-k">new</span> Error(<span class="t-s">"Could not load products"</span>);
+  <span class="t-k">return</span> res.json();
+}
+
+<span class="t-k">export</span> <span class="t-k">async</span> <span class="t-k">function</span> createProduct(input: NewProduct): Promise&lt;Product&gt; {
+  <span class="t-k">const</span> res = <span class="t-k">await</span> fetch(<span class="t-s">`${API_URL}/products`</span>, {
+    method: <span class="t-s">"POST"</span>,
+    headers: { <span class="t-s">"Content-Type"</span>: <span class="t-s">"application/json"</span> },
+    body: JSON.stringify(input),
+  });
+  <span class="t-k">if</span> (!res.ok) {
+    <span class="t-k">const</span> body = <span class="t-k">await</span> res.json().<span class="t-k">catch</span>(() =&gt; <span class="t-k">null</span>);
+    <span class="t-k">throw</span> <span class="t-k">new</span> Error(body?.error ?? <span class="t-s">"Could not add the product"</span>);
+  }
+  <span class="t-k">return</span> res.json();
+}</code></pre>
+</figure>
+<figure class="code type">
+  <figcaption><span class="file">client/src/hooks/useProducts.ts</span><span class="badge type">type along</span><button class="copy" data-target="c43" type="button">Copy</button></figcaption>
+  <p class="code-note">Add <code>addProduct</code>, which calls the api and appends the new product to state.</p>
+  <pre><code id="c43" class="lang-ts"><span class="t-k">import</span> { useEffect, useState } <span class="t-k">from</span> <span class="t-s">"react"</span>;
+<span class="t-k">import</span> { createProduct, fetchProducts } <span class="t-k">from</span> <span class="t-s">"../api/products"</span>;
+<span class="t-k">import</span> <span class="t-k">type</span> { NewProduct, Product } <span class="t-k">from</span> <span class="t-s">"../types"</span>;
+
+<span class="t-k">export</span> <span class="t-k">function</span> useProducts() {
+  <span class="t-k">const</span> [allProducts, setAllProducts] = useState&lt;Product[]&gt;([]);
+  <span class="t-k">const</span> [category, setCategory] = useState(<span class="t-s">"All"</span>);
+  <span class="t-k">const</span> [loading, setLoading] = useState(<span class="t-k">true</span>);
+  <span class="t-k">const</span> [error, setError] = useState&lt;string | <span class="t-k">null</span>&gt;(<span class="t-k">null</span>);
+
+  useEffect(() =&gt; {
+    fetchProducts()
+      .then(setAllProducts)
+      .<span class="t-k">catch</span>((err: Error) =&gt; setError(err.message))
+      .<span class="t-k">finally</span>(() =&gt; setLoading(<span class="t-k">false</span>));
+  }, []);
+
+  <span class="t-k">const</span> products =
+    category === <span class="t-s">"All"</span> ? allProducts : allProducts.filter((product) =&gt; product.category === category);
+
+  <span class="t-k">const</span> addProduct = <span class="t-k">async</span> (input: NewProduct) =&gt; {
+    <span class="t-k">const</span> created = <span class="t-k">await</span> createProduct(input);
+    setAllProducts((prev) =&gt; [...prev, created]);
+  };
+
+  <span class="t-k">return</span> { products, category, setCategory, loading, error, addProduct };
+}</code></pre>
+</figure>
+<h2 id="step-5-form">3. The form</h2>
+<p>A plain controlled form: each field has a state value and an <code>onChange</code>. Paste it and read it. Notice that <b>category is a free text field</b>.</p>
+<figure class="code paste">
+  <figcaption><span class="file">client/src/components/AddProductForm.tsx</span><span class="badge paste">copy and paste</span><button class="copy" data-target="c44" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c44" class="lang-ts"><span class="t-k">import</span> { useState, <span class="t-k">type</span> ChangeEvent, <span class="t-k">type</span> FormEvent } <span class="t-k">from</span> <span class="t-s">"react"</span>;
+<span class="t-k">import</span> <span class="t-k">type</span> { NewProduct } <span class="t-k">from</span> <span class="t-s">"../types"</span>;
+
+<span class="t-k">type</span> Props = {
+  onSubmit: (input: NewProduct) =&gt; Promise&lt;<span class="t-k">void</span>&gt;;
+  onCancel: () =&gt; <span class="t-k">void</span>;
+};
+
+<span class="t-k">export</span> <span class="t-k">default</span> <span class="t-k">function</span> AddProductForm({ onSubmit, onCancel }: Props) {
+  <span class="t-k">const</span> [values, setValues] = useState({ name: <span class="t-s">""</span>, price: <span class="t-s">""</span>, category: <span class="t-s">""</span>, image_url: <span class="t-s">""</span> });
+  <span class="t-k">const</span> [error, setError] = useState&lt;string | <span class="t-k">null</span>&gt;(<span class="t-k">null</span>);
+  <span class="t-k">const</span> [submitting, setSubmitting] = useState(<span class="t-k">false</span>);
+
+  <span class="t-k">const</span> change = (field: keyof <span class="t-k">typeof</span> values) =&gt; (e: ChangeEvent&lt;HTMLInputElement&gt;) =&gt;
+    setValues((prev) =&gt; ({ ...prev, [field]: e.target.value }));
+
+  <span class="t-k">const</span> handleSubmit = <span class="t-k">async</span> (e: FormEvent) =&gt; {
+    e.preventDefault();
+    setError(<span class="t-k">null</span>);
+    setSubmitting(<span class="t-k">true</span>);
+    <span class="t-k">try</span> {
+      <span class="t-k">await</span> onSubmit({ ...values, price: Number(values.price) });
+    } <span class="t-k">catch</span> (err) {
+      setError(err instanceof Error ? err.message : <span class="t-s">"Something went wrong"</span>);
+      setSubmitting(<span class="t-k">false</span>);
+    }
+  };
+
+  <span class="t-k">return</span> (
+    &lt;form className=<span class="t-s">"form-panel"</span> onSubmit={handleSubmit}&gt;
+      &lt;h2&gt;Add a product&lt;/h2&gt;
+      &lt;div className=<span class="t-s">"form-grid"</span>&gt;
+        &lt;div className=<span class="t-s">"field"</span>&gt;
+          &lt;label htmlFor=<span class="t-s">"name"</span>&gt;Name&lt;/label&gt;
+          &lt;input id=<span class="t-s">"name"</span> value={values.name} onChange={change(<span class="t-s">"name"</span>)} placeholder=<span class="t-s">"Desk Lamp"</span> /&gt;
+        &lt;/div&gt;
+        &lt;div className=<span class="t-s">"field"</span>&gt;
+          &lt;label htmlFor=<span class="t-s">"price"</span>&gt;Price&lt;/label&gt;
+          &lt;input id=<span class="t-s">"price"</span> value={values.price} onChange={change(<span class="t-s">"price"</span>)} placeholder=<span class="t-s">"19.99"</span> /&gt;
+        &lt;/div&gt;
+        &lt;div className=<span class="t-s">"field"</span>&gt;
+          &lt;label htmlFor=<span class="t-s">"category"</span>&gt;Category&lt;/label&gt;
+          &lt;input id=<span class="t-s">"category"</span> value={values.category} onChange={change(<span class="t-s">"category"</span>)} placeholder=<span class="t-s">"Home"</span> /&gt;
+        &lt;/div&gt;
+        &lt;div className=<span class="t-s">"field"</span>&gt;
+          &lt;label htmlFor=<span class="t-s">"image_url"</span>&gt;Image URL&lt;/label&gt;
+          &lt;input id=<span class="t-s">"image_url"</span> value={values.image_url} onChange={change(<span class="t-s">"image_url"</span>)} placeholder=<span class="t-s">"https://..."</span> /&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      {error &amp;&amp; &lt;p className=<span class="t-s">"field-error"</span>&gt;{error}&lt;/p&gt;}
+      &lt;div className=<span class="t-s">"form-actions"</span>&gt;
+        &lt;button className=<span class="t-s">"btn btn-primary"</span> <span class="t-k">type</span>=<span class="t-s">"submit"</span> disabled={submitting}&gt;
+          {submitting ? <span class="t-s">"Adding..."</span> : <span class="t-s">"Add product"</span>}
+        &lt;/button&gt;
+        &lt;button className=<span class="t-s">"btn"</span> <span class="t-k">type</span>=<span class="t-s">"button"</span> onClick={onCancel}&gt;
+          Cancel
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+</figure>
+<figure class="code type">
+  <figcaption><span class="file">client/src/App.tsx</span><span class="badge type">type along</span><button class="copy" data-target="c45" type="button">Copy</button></figcaption>
+  <p class="code-note">A header button shows the form. When the product is saved the form closes.</p>
+  <pre><code id="c45" class="lang-ts"><span class="t-k">import</span> { useState } <span class="t-k">from</span> <span class="t-s">"react"</span>;
+<span class="t-k">import</span> AddProductForm <span class="t-k">from</span> <span class="t-s">"./components/AddProductForm"</span>;
+<span class="t-k">import</span> CategoryFilter <span class="t-k">from</span> <span class="t-s">"./components/CategoryFilter"</span>;
+<span class="t-k">import</span> ProductList <span class="t-k">from</span> <span class="t-s">"./components/ProductList"</span>;
+<span class="t-k">import</span> { CATEGORIES } <span class="t-k">from</span> <span class="t-s">"./constants"</span>;
+<span class="t-k">import</span> { useProducts } <span class="t-k">from</span> <span class="t-s">"./hooks/useProducts"</span>;
+
+<span class="t-k">export</span> <span class="t-k">default</span> <span class="t-k">function</span> App() {
+  <span class="t-k">const</span> { products, category, setCategory, loading, error, addProduct } = useProducts();
+  <span class="t-k">const</span> [formOpen, setFormOpen] = useState(<span class="t-k">false</span>);
+
+  <span class="t-k">return</span> (
+    &lt;&gt;
+      &lt;header className=<span class="t-s">"header"</span>&gt;
+        &lt;div className=<span class="t-s">"brand"</span>&gt;
+          &lt;span className=<span class="t-s">"brand-mark"</span>&gt;M&lt;/span&gt; Mini Shop
+        &lt;/div&gt;
+        &lt;div className=<span class="t-s">"header-actions"</span>&gt;
+          &lt;button className=<span class="t-s">"btn"</span> onClick={() =&gt; setFormOpen((open) =&gt; !open)}&gt;
+            + Add product
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+
+      &lt;main className=<span class="t-s">"main"</span>&gt;
+        &lt;h1 className=<span class="t-s">"page-title"</span>&gt;{category === <span class="t-s">"All"</span> ? <span class="t-s">"All products"</span> : category}&lt;/h1&gt;
+        &lt;p className=<span class="t-s">"page-subtitle"</span>&gt;{loading ? <span class="t-s">"Loading..."</span> : <span class="t-s">`${products.length} products`</span>}&lt;/p&gt;
+        {formOpen &amp;&amp; (
+          &lt;AddProductForm
+            onSubmit={<span class="t-k">async</span> (input) =&gt; {
+              <span class="t-k">await</span> addProduct(input);
+              setFormOpen(<span class="t-k">false</span>);
+            }}
+            onCancel={() =&gt; setFormOpen(<span class="t-k">false</span>)}
+          /&gt;
+        )}
+        &lt;CategoryFilter categories={CATEGORIES} selected={category} onSelect={setCategory} /&gt;
+        {error &amp;&amp; &lt;p className=<span class="t-s">"status error"</span>&gt;{error}&lt;/p&gt;}
+        {!loading &amp;&amp; !error &amp;&amp; &lt;ProductList products={products} /&gt;}
+      &lt;/main&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+</figure>
+<h2 id="step-5-good">4. A normal product works</h2>
+<p>Click <b>+ Add product</b> and fill in:</p>
+<figure class="code ">
+  <figcaption><span class="file">Try it</span><button class="copy" data-target="c46" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c46" class="lang-text">Name:      Desk Lamp
+Price:     <span class="t-n">25</span>
+Category:  Home
+Image URL: https:<span class="t-c">//cdn.dummyjson.com/product-images/furniture/annibale-colombo-bed/thumbnail.webp</span></code></pre>
+</figure>
+<aside class="callout checkpoint"><strong>Checkpoint</strong><p>The form closes and <b>Desk Lamp</b> appears at the end of the list. Reload: it is still there, because it is in the database.</p></aside>
+<h2 id="step-5-faulty">5. Now push a faulty product</h2>
+<p>Add one more, but type a category we do not support:</p>
+<figure class="code ">
+  <figcaption><span class="file">Break it</span><button class="copy" data-target="c47" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c47" class="lang-text">Name:      Magic Gadget
+Price:     <span class="t-n">15.5</span>
+Category:  Gadgets
+Image URL: https:<span class="t-c">//cdn.dummyjson.com/product-images/sunglasses/black-sun-glasses/thumbnail.webp</span></code></pre>
+</figure>
+<p>It is saved. But click <b>Electronics</b>, <b>Clothing</b>, <b>Home</b>, <b>Accessories</b>: <b>Magic Gadget</b> is in none of them. It only shows under <b>All</b>.</p>
+<aside class="say presenter"><strong>Say</strong>The server accepted anything we sent. No check, no error. The data is now wrong and nobody told us. Bad data in a database is hard to find later. Ask the room: how would we stop this? That leads to step 6.</aside>
+<aside class="callout warn"><strong>Clean up the faulty product</strong><p>Open the Neon <b>SQL Editor</b> and run the statement below. Reload the page: it is gone. (Deleting through the API comes in step 7.)</p></aside>
+<figure class="code ">
+  <figcaption><span class="file">Neon SQL Editor</span><button class="copy" data-target="c48" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c48" class="lang-sql"><span class="t-k">DELETE</span> <span class="t-k">FROM</span> products <span class="t-k">WHERE</span> category = <span class="t-s">'Gadgets'</span>;</code></pre>
+</figure>
+<h2 id="step-5-catchup">Fell behind? Catch up</h2>
+<p>Jump to the finished state of this step. This discards your local changes in the working folder.</p>
+<figure class="code ">
+  <figcaption><span class="file">Terminal</span><button class="copy" data-target="c49" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c49" class="lang-bash">git checkout -f step-<span class="t-n">5</span>-add-product</code></pre>
+</figure>
+<p>Want to keep your own work first? Run <code>git stash -u</code> before the checkout.</p>
+  </section>
+<section class="page" id="step-6">
+    <div class="kicker">Step 6</div>
+    <h1>Validation with Zod</h1>
+    <p class="lead">Make the server refuse bad data, then use the same idea in the form so users see helpful messages.</p>
+    <div class="meta"><span><b>Time</b> 2:30 to 2:45 (15 min)</span><span><b>Branch at the end</b> <code>step-6-validation</code></span><span><b>Topics</b> Zod, status codes, validating on both sides</span></div>
+    <details class="changed"><summary>Files that change in this step (4)</summary><ul><li><span class="st st-M">edited</span> <code>client/src/components/AddProductForm.tsx</code></li><li><span class="st st-A">new</span> <code>client/src/schemas/product.ts</code></li><li><span class="st st-M">edited</span> <code>server/src/controllers/products.ts</code></li><li><span class="st st-A">new</span> <code>server/src/schemas.ts</code></li></ul></details>
+<h2 id="step-6-server">1. Validate on the server first</h2>
+<p>A <b>schema</b> describes what a valid product looks like. If the data does not match, we answer with <b>400 Bad Request</b> and a clear message.</p>
+<figure class="code type">
+  <figcaption><span class="file">server/src/schemas.ts</span><span class="badge type">type along</span><button class="copy" data-target="c50" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c50" class="lang-ts"><span class="t-k">import</span> { z } <span class="t-k">from</span> <span class="t-s">"zod"</span>;
+
+<span class="t-k">export</span> <span class="t-k">const</span> CATEGORIES = [<span class="t-s">"Electronics"</span>, <span class="t-s">"Clothing"</span>, <span class="t-s">"Home"</span>, <span class="t-s">"Accessories"</span>] <span class="t-k">as</span> <span class="t-k">const</span>;
+
+<span class="t-k">export</span> <span class="t-k">const</span> newProductSchema = z.object({
+  name: z.string().trim().min(<span class="t-n">2</span>, <span class="t-s">"Name must be at least 2 characters"</span>),
+  price: z.number({ error: <span class="t-s">"Price must be a number"</span> }).positive(<span class="t-s">"Price must be positive"</span>),
+  category: z.enum(CATEGORIES, { error: <span class="t-s">`Category must be one of: ${CATEGORIES.join(", ")}`</span> }),
+  image_url: z.url({ error: <span class="t-s">"Image URL must be a valid URL"</span> }),
+});</code></pre>
+</figure>
+<figure class="code type">
+  <figcaption><span class="file">server/src/controllers/products.ts</span><span class="badge type">type along</span><button class="copy" data-target="c51" type="button">Copy</button></figcaption>
+  <p class="code-note"><code>safeParse</code> never throws. It returns <code>success</code> or a list of problems.</p>
+  <pre><code id="c51" class="lang-ts"><span class="t-k">import</span> <span class="t-k">type</span> { Request, Response } <span class="t-k">from</span> <span class="t-s">"express"</span>;
+<span class="t-k">import</span> { getProducts, insertProduct } <span class="t-k">from</span> <span class="t-s">"../db/postgres.js"</span>;
+<span class="t-k">import</span> { newProductSchema } <span class="t-k">from</span> <span class="t-s">"../schemas.js"</span>;
+
+<span class="t-k">export</span> <span class="t-k">async</span> <span class="t-k">function</span> listProducts(_req: Request, res: Response) {
+  res.json(<span class="t-k">await</span> getProducts());
+}
+
+<span class="t-k">export</span> <span class="t-k">async</span> <span class="t-k">function</span> createProduct(req: Request, res: Response) {
+  <span class="t-k">const</span> parsed = newProductSchema.safeParse(req.body);
+  <span class="t-k">if</span> (!parsed.success) {
+    res.status(<span class="t-n">400</span>).json({ error: parsed.error.issues[<span class="t-n">0</span>].message });
+    <span class="t-k">return</span>;
+  }
+
+  <span class="t-k">const</span> product = <span class="t-k">await</span> insertProduct(parsed.data);
+  res.status(<span class="t-n">201</span>).json(product);
+}</code></pre>
+</figure>
+<div class="table-wrap"><table><thead><tr><th>Status</th><th>Meaning</th><th>Used for</th></tr></thead><tbody><tr><td>200</td><td>OK</td><td>list products</td></tr><tr><td>201</td><td>Created</td><td>product added</td></tr><tr><td>204</td><td>No content</td><td>product deleted (step 7)</td></tr><tr><td>400</td><td>Bad request</td><td>the data is not valid</td></tr><tr><td>404</td><td>Not found</td><td>deleting an id that does not exist</td></tr><tr><td>500</td><td>Server error</td><td>something unexpected broke</td></tr></tbody></table></div>
+<h2 id="step-6-try">2. Try the faulty product again</h2>
+<p>Fill in the same <b>Magic Gadget</b> with category <b>Gadgets</b> and click add.</p>
+<aside class="callout checkpoint"><strong>Checkpoint</strong><p>The form shows a red message: <i>Category must be one of: Electronics, Clothing, Home, Accessories</i>. Nothing was saved. (If it still goes through, check that the server restarted.)</p></aside>
+<h2 id="step-6-client">3. Use the same idea in the form</h2>
+<p>The server is the real guard. The form is a convenience: it tells people what is wrong <b>before</b> a request is sent.</p>
+<figure class="code type">
+  <figcaption><span class="file">client/src/schemas/product.ts</span><span class="badge type">type along</span><button class="copy" data-target="c52" type="button">Copy</button></figcaption>
+  <p class="code-note"><code>z.coerce.number()</code> converts the text from the form into a number before checking it.</p>
+  <pre><code id="c52" class="lang-ts"><span class="t-k">import</span> { z } <span class="t-k">from</span> <span class="t-s">"zod"</span>;
+<span class="t-k">import</span> { CATEGORIES } <span class="t-k">from</span> <span class="t-s">"../constants"</span>;
+
+<span class="t-k">const</span> PRODUCT_CATEGORIES = CATEGORIES.filter((category) =&gt; category !== <span class="t-s">"All"</span>);
+
+<span class="t-k">export</span> <span class="t-k">const</span> productSchema = z.object({
+  name: z.string().trim().min(<span class="t-n">2</span>, <span class="t-s">"Name must be at least 2 characters"</span>),
+  price: z.coerce.number({ error: <span class="t-s">"Price must be a number"</span> }).positive(<span class="t-s">"Price must be positive"</span>),
+  category: z.enum(PRODUCT_CATEGORIES <span class="t-k">as</span> [string, ...string[]], {
+    error: <span class="t-s">`Category must be one of: ${PRODUCT_CATEGORIES.join(", ")}`</span>,
+  }),
+  image_url: z.url({ error: <span class="t-s">"Image URL must be a valid URL"</span> }),
+});</code></pre>
+</figure>
+<figure class="code paste">
+  <figcaption><span class="file">client/src/components/AddProductForm.tsx</span><span class="badge paste">copy and paste</span><button class="copy" data-target="c53" type="button">Copy</button></figcaption>
+  <p class="code-note">The new part is the <code>productSchema.safeParse(values)</code> check in <code>handleSubmit</code>.</p>
+  <pre><code id="c53" class="lang-ts"><span class="t-k">import</span> { useState, <span class="t-k">type</span> ChangeEvent, <span class="t-k">type</span> FormEvent } <span class="t-k">from</span> <span class="t-s">"react"</span>;
+<span class="t-k">import</span> { productSchema } <span class="t-k">from</span> <span class="t-s">"../schemas/product"</span>;
+<span class="t-k">import</span> <span class="t-k">type</span> { NewProduct } <span class="t-k">from</span> <span class="t-s">"../types"</span>;
+
+<span class="t-k">type</span> Props = {
+  onSubmit: (input: NewProduct) =&gt; Promise&lt;<span class="t-k">void</span>&gt;;
+  onCancel: () =&gt; <span class="t-k">void</span>;
+};
+
+<span class="t-k">type</span> Values = { name: string; price: string; category: string; image_url: string };
+<span class="t-k">type</span> Errors = Partial&lt;Record&lt;keyof Values, string&gt;&gt;;
+
+<span class="t-k">export</span> <span class="t-k">default</span> <span class="t-k">function</span> AddProductForm({ onSubmit, onCancel }: Props) {
+  <span class="t-k">const</span> [values, setValues] = useState&lt;Values&gt;({ name: <span class="t-s">""</span>, price: <span class="t-s">""</span>, category: <span class="t-s">""</span>, image_url: <span class="t-s">""</span> });
+  <span class="t-k">const</span> [errors, setErrors] = useState&lt;Errors&gt;({});
+  <span class="t-k">const</span> [serverError, setServerError] = useState&lt;string | <span class="t-k">null</span>&gt;(<span class="t-k">null</span>);
+  <span class="t-k">const</span> [submitting, setSubmitting] = useState(<span class="t-k">false</span>);
+
+  <span class="t-k">const</span> change = (field: keyof Values) =&gt; (e: ChangeEvent&lt;HTMLInputElement&gt;) =&gt;
+    setValues((prev) =&gt; ({ ...prev, [field]: e.target.value }));
+
+  <span class="t-k">const</span> handleSubmit = <span class="t-k">async</span> (e: FormEvent) =&gt; {
+    e.preventDefault();
+    setServerError(<span class="t-k">null</span>);
+
+    <span class="t-k">const</span> result = productSchema.safeParse(values);
+    <span class="t-k">if</span> (!result.success) {
+      <span class="t-k">const</span> fieldErrors: Errors = {};
+      <span class="t-k">for</span> (<span class="t-k">const</span> issue <span class="t-k">of</span> result.error.issues) {
+        <span class="t-k">const</span> field = issue.path[<span class="t-n">0</span>] <span class="t-k">as</span> keyof Values;
+        <span class="t-k">if</span> (!fieldErrors[field]) fieldErrors[field] = issue.message;
+      }
+      setErrors(fieldErrors);
+      <span class="t-k">return</span>;
+    }
+
+    setErrors({});
+    setSubmitting(<span class="t-k">true</span>);
+    <span class="t-k">try</span> {
+      <span class="t-k">await</span> onSubmit(result.data);
+    } <span class="t-k">catch</span> (err) {
+      setServerError(err instanceof Error ? err.message : <span class="t-s">"Something went wrong"</span>);
+      setSubmitting(<span class="t-k">false</span>);
+    }
+  };
+
+  <span class="t-k">const</span> field = (name: keyof Values, label: string, placeholder: string) =&gt; (
+    &lt;div className={errors[name] ? <span class="t-s">"field invalid"</span> : <span class="t-s">"field"</span>}&gt;
+      &lt;label htmlFor={name}&gt;{label}&lt;/label&gt;
+      &lt;input id={name} value={values[name]} onChange={change(name)} placeholder={placeholder} /&gt;
+      {errors[name] &amp;&amp; &lt;span className=<span class="t-s">"field-error"</span>&gt;{errors[name]}&lt;/span&gt;}
+    &lt;/div&gt;
+  );
+
+  <span class="t-k">return</span> (
+    &lt;form className=<span class="t-s">"form-panel"</span> onSubmit={handleSubmit} noValidate&gt;
+      &lt;h2&gt;Add a product&lt;/h2&gt;
+      &lt;div className=<span class="t-s">"form-grid"</span>&gt;
+        {field(<span class="t-s">"name"</span>, <span class="t-s">"Name"</span>, <span class="t-s">"Desk Lamp"</span>)}
+        {field(<span class="t-s">"price"</span>, <span class="t-s">"Price"</span>, <span class="t-s">"19.99"</span>)}
+        {field(<span class="t-s">"category"</span>, <span class="t-s">"Category"</span>, <span class="t-s">"Home"</span>)}
+        {field(<span class="t-s">"image_url"</span>, <span class="t-s">"Image URL"</span>, <span class="t-s">"https://..."</span>)}
+      &lt;/div&gt;
+      {serverError &amp;&amp; &lt;p className=<span class="t-s">"field-error"</span>&gt;{serverError}&lt;/p&gt;}
+      &lt;div className=<span class="t-s">"form-actions"</span>&gt;
+        &lt;button className=<span class="t-s">"btn btn-primary"</span> <span class="t-k">type</span>=<span class="t-s">"submit"</span> disabled={submitting}&gt;
+          {submitting ? <span class="t-s">"Adding..."</span> : <span class="t-s">"Add product"</span>}
+        &lt;/button&gt;
+        &lt;button className=<span class="t-s">"btn"</span> <span class="t-k">type</span>=<span class="t-s">"button"</span> onClick={onCancel}&gt;
+          Cancel
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+</figure>
+<aside class="callout checkpoint"><strong>Checkpoint</strong><p>Submitting an empty form shows a message under each field. A negative price shows <i>Price must be positive</i>. A valid product closes the form and its card appears.</p></aside>
+<h2 id="step-6-clean">4. Push a clean product</h2>
+<figure class="code ">
+  <figcaption><span class="file">Try it</span><button class="copy" data-target="c54" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c54" class="lang-text">Name:      Desk Lamp
+Price:     <span class="t-n">25</span>
+Category:  Home
+Image URL: https:<span class="t-c">//cdn.dummyjson.com/product-images/furniture/annibale-colombo-bed/thumbnail.webp</span></code></pre>
+</figure>
+<p>Now click <b>Home</b>. The new product is in the filter, because its category is one we support.</p>
+<aside class="say presenter"><strong>Say</strong>Two layers of defence. The form helps honest users. The server stops everyone else, including tools like Postman and scripts, which never run our form. In step 7 you will see that for yourself.</aside>
+<h2 id="step-6-catchup">Fell behind? Catch up</h2>
+<p>Jump to the finished state of this step. This discards your local changes in the working folder.</p>
+<figure class="code ">
+  <figcaption><span class="file">Terminal</span><button class="copy" data-target="c55" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c55" class="lang-bash">git checkout -f step-<span class="t-n">6</span>-validation</code></pre>
+</figure>
+<p>Want to keep your own work first? Run <code>git stash -u</code> before the checkout.</p>
+  </section>
+<section class="page" id="step-7">
+    <div class="kicker">Step 7</div>
+    <h1>Delete and Postman</h1>
+    <p class="lead">Add the delete endpoint, then test the whole API from Postman, with no frontend involved.</p>
+    <div class="meta"><span><b>Time</b> 2:45 to 3:00 (15 min)</span><span><b>Branch at the end</b> <code>step-7-delete-postman</code></span><span><b>Topics</b> DELETE, Postman, env files</span></div>
+    <details class="changed"><summary>Files that change in this step (4)</summary><ul><li><span class="st st-A">new</span> <code>postman/mini-shop.postman_collection.json</code></li><li><span class="st st-M">edited</span> <code>server/src/controllers/products.ts</code></li><li><span class="st st-M">edited</span> <code>server/src/db/postgres.ts</code></li><li><span class="st st-M">edited</span> <code>server/src/routes/products.ts</code></li></ul></details>
+<h2 id="step-7-code">1. The delete endpoint</h2>
+<figure class="code type">
+  <figcaption><span class="file">server/src/db/postgres.ts</span><span class="badge type">type along</span><button class="copy" data-target="c56" type="button">Copy</button></figcaption>
+  <p class="code-note">Add <code>deleteProduct</code> at the bottom.</p>
+  <pre><code id="c56" class="lang-ts"><span class="t-k">import</span> <span class="t-k">type</span> { NewProduct, Product } <span class="t-k">from</span> <span class="t-s">"../types.js"</span>;
+<span class="t-k">import</span> { pool } <span class="t-k">from</span> <span class="t-s">"./index.js"</span>;
+
+<span class="t-c">// NUMERIC comes back from Postgres as a string, so we cast it to a float in SQL</span>
+<span class="t-k">const</span> COLUMNS = <span class="t-s">"id, name, price::float8 AS price, category, image_url"</span>;
+
+<span class="t-k">export</span> <span class="t-k">async</span> <span class="t-k">function</span> getProducts() {
+  <span class="t-k">const</span> { rows } = <span class="t-k">await</span> pool.query&lt;Product&gt;(<span class="t-s">`SELECT ${COLUMNS} FROM products ORDER BY id`</span>);
+  <span class="t-k">return</span> rows;
+}
+
+<span class="t-k">export</span> <span class="t-k">async</span> <span class="t-k">function</span> insertProduct(input: NewProduct) {
+  <span class="t-k">const</span> { rows } = <span class="t-k">await</span> pool.query&lt;Product&gt;(
+    <span class="t-s">`INSERT INTO products (name, price, category, image_url)
+     VALUES ($1, $2, $3, $4)
+     RETURNING ${COLUMNS}`</span>,
+    [input.name, input.price, input.category, input.image_url],
+  );
+  <span class="t-k">return</span> rows[<span class="t-n">0</span>];
+}
+
+<span class="t-k">export</span> <span class="t-k">async</span> <span class="t-k">function</span> deleteProduct(id: number) {
+  <span class="t-k">const</span> { rowCount } = <span class="t-k">await</span> pool.query(<span class="t-s">"DELETE FROM products WHERE id = $1"</span>, [id]);
+  <span class="t-k">return</span> (rowCount ?? <span class="t-n">0</span>) &gt; <span class="t-n">0</span>;
+}</code></pre>
+</figure>
+<figure class="code type">
+  <figcaption><span class="file">server/src/controllers/products.ts</span><span class="badge type">type along</span><button class="copy" data-target="c57" type="button">Copy</button></figcaption>
+  <p class="code-note">Add <code>removeProduct</code>, and <code>deleteProduct</code> to the import.</p>
+  <pre><code id="c57" class="lang-ts"><span class="t-k">import</span> <span class="t-k">type</span> { Request, Response } <span class="t-k">from</span> <span class="t-s">"express"</span>;
+<span class="t-k">import</span> { deleteProduct, getProducts, insertProduct } <span class="t-k">from</span> <span class="t-s">"../db/postgres.js"</span>;
+<span class="t-k">import</span> { newProductSchema } <span class="t-k">from</span> <span class="t-s">"../schemas.js"</span>;
+
+<span class="t-k">export</span> <span class="t-k">async</span> <span class="t-k">function</span> listProducts(_req: Request, res: Response) {
+  res.json(<span class="t-k">await</span> getProducts());
+}
+
+<span class="t-k">export</span> <span class="t-k">async</span> <span class="t-k">function</span> createProduct(req: Request, res: Response) {
+  <span class="t-k">const</span> parsed = newProductSchema.safeParse(req.body);
+  <span class="t-k">if</span> (!parsed.success) {
+    res.status(<span class="t-n">400</span>).json({ error: parsed.error.issues[<span class="t-n">0</span>].message });
+    <span class="t-k">return</span>;
+  }
+
+  <span class="t-k">const</span> product = <span class="t-k">await</span> insertProduct(parsed.data);
+  res.status(<span class="t-n">201</span>).json(product);
+}
+
+<span class="t-k">export</span> <span class="t-k">async</span> <span class="t-k">function</span> removeProduct(req: Request, res: Response) {
+  <span class="t-k">const</span> id = Number(req.params.id);
+  <span class="t-k">if</span> (!Number.isInteger(id)) {
+    res.status(<span class="t-n">400</span>).json({ error: <span class="t-s">"id must be a number"</span> });
+    <span class="t-k">return</span>;
+  }
+
+  <span class="t-k">const</span> removed = <span class="t-k">await</span> deleteProduct(id);
+  <span class="t-k">if</span> (!removed) {
+    res.status(<span class="t-n">404</span>).json({ error: <span class="t-s">"Product not found"</span> });
+    <span class="t-k">return</span>;
+  }
+  res.status(<span class="t-n">204</span>).end();
+}</code></pre>
+</figure>
+<figure class="code type">
+  <figcaption><span class="file">server/src/routes/products.ts</span><span class="badge type">type along</span><button class="copy" data-target="c58" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c58" class="lang-ts"><span class="t-k">import</span> { Router } <span class="t-k">from</span> <span class="t-s">"express"</span>;
+<span class="t-k">import</span> { createProduct, listProducts, removeProduct } <span class="t-k">from</span> <span class="t-s">"../controllers/products.js"</span>;
+
+<span class="t-k">export</span> <span class="t-k">const</span> productsRouter = Router();
+
+productsRouter.get(<span class="t-s">"/"</span>, listProducts);
+productsRouter.post(<span class="t-s">"/"</span>, createProduct);
+productsRouter.delete(<span class="t-s">"/:id"</span>, removeProduct);</code></pre>
+</figure>
+<h2 id="step-7-postman">2. Meet Postman</h2>
+<p>Postman is a tool for sending requests to an API and reading the answers. It is not a browser, so there is no CORS and no form, which makes it perfect for testing a backend on its own.</p>
+<ol><li>Open Postman and create a new <b>HTTP request</b>.</li><li>Choose <b>GET</b>, enter <code>http://localhost:3001/api/products</code> and click <b>Send</b>. You see the JSON array.</li><li>Create a <b>POST</b> to the same URL. Open <b>Body</b>, choose <b>raw</b> and <b>JSON</b>, paste the faulty product below, and send it.</li><li>Read the answer: <b>400</b> and the message. The validation works even without our form.</li><li>Change the category to <code>Home</code> and send again: <b>201 Created</b>, and the response has the new <code>id</code>.</li><li>Create a <b>DELETE</b> to <code>http://localhost:3001/api/products/&lt;that id&gt;</code> and send it: <b>204 No Content</b>. Send it again: <b>404</b>.</li></ol>
+<figure class="code ">
+  <figcaption><span class="file">POST body</span><button class="copy" data-target="c59" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c59" class="lang-json">{
+  <span class="t-s">"name"</span>: <span class="t-s">"Magic Gadget"</span>,
+  <span class="t-s">"price"</span>: <span class="t-n">15.5</span>,
+  <span class="t-s">"category"</span>: <span class="t-s">"Gadgets"</span>,
+  <span class="t-s">"image_url"</span>: <span class="t-s">"https://cdn.dummyjson.com/product-images/sunglasses/black-sun-glasses/thumbnail.webp"</span>
+}</code></pre>
+</figure>
+<aside class="callout tip"><strong>Short on time?</strong><p>Import the ready-made collection: in Postman choose <b>Import</b> and pick <code>postman/mini-shop.postman_collection.json</code>. It has Health, List, Create (clean), Create (faulty) and Delete.</p></aside>
+<figure class="code paste">
+  <figcaption><span class="file">postman/mini-shop.postman_collection.json</span><span class="badge paste">copy and paste</span><button class="copy" data-target="c60" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c60" class="lang-json">{
+  <span class="t-s">"info"</span>: {
+    <span class="t-s">"name"</span>: <span class="t-s">"Mini Shop API"</span>,
+    <span class="t-s">"schema"</span>: <span class="t-s">"https://schema.getpostman.com/json/collection/v2.1.0/collection.json"</span>
+  },
+  <span class="t-s">"variable"</span>: [
+    {
+      <span class="t-s">"key"</span>: <span class="t-s">"baseUrl"</span>,
+      <span class="t-s">"value"</span>: <span class="t-s">"http://localhost:3001/api"</span>
+    },
+    {
+      <span class="t-s">"key"</span>: <span class="t-s">"productId"</span>,
+      <span class="t-s">"value"</span>: <span class="t-s">"13"</span>
+    }
+  ],
+  <span class="t-s">"item"</span>: [
+    {
+      <span class="t-s">"name"</span>: <span class="t-s">"Health"</span>,
+      <span class="t-s">"request"</span>: {
+        <span class="t-s">"method"</span>: <span class="t-s">"GET"</span>,
+        <span class="t-s">"header"</span>: [],
+        <span class="t-s">"url"</span>: {
+          <span class="t-s">"raw"</span>: <span class="t-s">"{{baseUrl}}/health"</span>,
+          <span class="t-s">"host"</span>: [
+            <span class="t-s">"{{baseUrl}}"</span>
+          ],
+          <span class="t-s">"path"</span>: [
+            <span class="t-s">"health"</span>
+          ]
+        }
+      }
+    },
+    {
+      <span class="t-s">"name"</span>: <span class="t-s">"List products"</span>,
+      <span class="t-s">"request"</span>: {
+        <span class="t-s">"method"</span>: <span class="t-s">"GET"</span>,
+        <span class="t-s">"header"</span>: [],
+        <span class="t-s">"url"</span>: {
+          <span class="t-s">"raw"</span>: <span class="t-s">"{{baseUrl}}/products"</span>,
+          <span class="t-s">"host"</span>: [
+            <span class="t-s">"{{baseUrl}}"</span>
+          ],
+          <span class="t-s">"path"</span>: [
+            <span class="t-s">"products"</span>
+          ]
+        }
+      }
+    },
+    {
+      <span class="t-s">"name"</span>: <span class="t-s">"Create product (clean)"</span>,
+      <span class="t-s">"request"</span>: {
+        <span class="t-s">"method"</span>: <span class="t-s">"POST"</span>,
+        <span class="t-s">"header"</span>: [
+          {
+            <span class="t-s">"key"</span>: <span class="t-s">"Content-Type"</span>,
+            <span class="t-s">"value"</span>: <span class="t-s">"application/json"</span>
+          }
+        ],
+        <span class="t-s">"url"</span>: {
+          <span class="t-s">"raw"</span>: <span class="t-s">"{{baseUrl}}/products"</span>,
+          <span class="t-s">"host"</span>: [
+            <span class="t-s">"{{baseUrl}}"</span>
+          ],
+          <span class="t-s">"path"</span>: [
+            <span class="t-s">"products"</span>
+          ]
+        },
+        <span class="t-s">"body"</span>: {
+          <span class="t-s">"mode"</span>: <span class="t-s">"raw"</span>,
+          <span class="t-s">"raw"</span>: <span class="t-s">"{\n  \"name\": \"Desk Lamp\",\n  \"price\": 25,\n  \"category\": \"Home\",\n  \"image_url\": \"https://cdn.dummyjson.com/product-images/sunglasses/black-sun-glasses/thumbnail.webp\"\n}"</span>,
+          <span class="t-s">"options"</span>: {
+            <span class="t-s">"raw"</span>: {
+              <span class="t-s">"language"</span>: <span class="t-s">"json"</span>
+            }
+          }
+        }
+      }
+    },
+    {
+      <span class="t-s">"name"</span>: <span class="t-s">"Create product (faulty category)"</span>,
+      <span class="t-s">"request"</span>: {
+        <span class="t-s">"method"</span>: <span class="t-s">"POST"</span>,
+        <span class="t-s">"header"</span>: [
+          {
+            <span class="t-s">"key"</span>: <span class="t-s">"Content-Type"</span>,
+            <span class="t-s">"value"</span>: <span class="t-s">"application/json"</span>
+          }
+        ],
+        <span class="t-s">"url"</span>: {
+          <span class="t-s">"raw"</span>: <span class="t-s">"{{baseUrl}}/products"</span>,
+          <span class="t-s">"host"</span>: [
+            <span class="t-s">"{{baseUrl}}"</span>
+          ],
+          <span class="t-s">"path"</span>: [
+            <span class="t-s">"products"</span>
+          ]
+        },
+        <span class="t-s">"body"</span>: {
+          <span class="t-s">"mode"</span>: <span class="t-s">"raw"</span>,
+          <span class="t-s">"raw"</span>: <span class="t-s">"{\n  \"name\": \"Magic Gadget\",\n  \"price\": 15.5,\n  \"category\": \"Gadgets\",\n  \"image_url\": \"https://cdn.dummyjson.com/product-images/sunglasses/black-sun-glasses/thumbnail.webp\"\n}"</span>,
+          <span class="t-s">"options"</span>: {
+            <span class="t-s">"raw"</span>: {
+              <span class="t-s">"language"</span>: <span class="t-s">"json"</span>
+            }
+          }
+        }
+      }
+    },
+    {
+      <span class="t-s">"name"</span>: <span class="t-s">"Delete product"</span>,
+      <span class="t-s">"request"</span>: {
+        <span class="t-s">"method"</span>: <span class="t-s">"DELETE"</span>,
+        <span class="t-s">"header"</span>: [],
+        <span class="t-s">"url"</span>: {
+          <span class="t-s">"raw"</span>: <span class="t-s">"{{baseUrl}}/products/{{productId}}"</span>,
+          <span class="t-s">"host"</span>: [
+            <span class="t-s">"{{baseUrl}}"</span>
+          ],
+          <span class="t-s">"path"</span>: [
+            <span class="t-s">"products"</span>,
+            <span class="t-s">"{{productId}}"</span>
+          ]
+        }
+      }
+    }
+  ]
+}</code></pre>
+</figure>
+<aside class="callout checkpoint"><strong>Checkpoint</strong><p>In Postman: GET returns the list, the faulty POST returns 400, a clean POST returns 201, DELETE returns 204 then 404. Back in the browser, reload: the deleted product is gone.</p></aside>
+<h2 id="step-7-env">3. A word about env files</h2>
+<ul><li><code>server/.env</code> holds values that change between machines or are secret: the port, the allowed website, the database password.</li><li>It is in <code>.gitignore</code>, so it is never committed. <code>.env.example</code> is committed instead, with empty values, to show what is needed.</li><li>In production (Render, Vercel) the same names are set in the hosting dashboard, not in a file.</li><li>The server reads them once, in <code>config.ts</code>. The rest of the code imports <code>config</code> and never touches <code>process.env</code>.</li></ul>
+<aside class="say presenter"><strong>Say</strong>Ask: what would happen if we committed the .env file? Anyone who sees the repo could use your database. Rotating the password would fix it, but only if you notice.</aside>
+<h2 id="step-7-catchup">Fell behind? Catch up</h2>
+<p>Jump to the finished state of this step. This discards your local changes in the working folder.</p>
+<figure class="code ">
+  <figcaption><span class="file">Terminal</span><button class="copy" data-target="c61" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c61" class="lang-bash">git checkout -f step-<span class="t-n">7</span>-delete-postman</code></pre>
+</figure>
+<p>Want to keep your own work first? Run <code>git stash -u</code> before the checkout.</p>
+  </section>
+<section class="page" id="step-8">
+    <div class="kicker">Step 8</div>
+    <h1>The cart and global state</h1>
+    <p class="lead">Add the cart. This is the one place where many components need the same data, so we meet a store.</p>
+    <div class="meta"><span><b>Time</b> 3:00 to 3:15 (15 min)</span><span><b>Branch at the end</b> <code>step-8-cart-zustand</code> (the same as <code>final</code>, apart from the deploy files)</span><span><b>Topics</b> global state, zustand</span></div>
+    <details class="changed"><summary>Files that change in this step (4)</summary><ul><li><span class="st st-M">edited</span> <code>client/src/App.tsx</code></li><li><span class="st st-A">new</span> <code>client/src/components/CartDrawer.tsx</code></li><li><span class="st st-M">edited</span> <code>client/src/components/ProductCard.tsx</code></li><li><span class="st st-A">new</span> <code>client/src/store/cartStore.ts</code></li></ul></details>
+<h2 id="step-8-why">1. Why a store?</h2>
+<p>Three different components care about the cart: the <b>Add to cart</b> button on every card, the <b>badge</b> in the header, and the <b>drawer</b>. They sit in different parts of the tree.</p>
+<ul><li>With local state we would have to pass the cart down through props, through components that do not care about it.</li><li>A <b>store</b> lives outside the component tree. Any component can read it or change it directly.</li><li><b>zustand</b> is a tiny library for this: one function, no providers.</li></ul>
+<h2 id="step-8-store">2. The store (type this)</h2>
+<figure class="code type">
+  <figcaption><span class="file">client/src/store/cartStore.ts</span><span class="badge type">type along</span><button class="copy" data-target="c62" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c62" class="lang-ts"><span class="t-k">import</span> { create } <span class="t-k">from</span> <span class="t-s">"zustand"</span>;
+<span class="t-k">import</span> <span class="t-k">type</span> { Product } <span class="t-k">from</span> <span class="t-s">"../types"</span>;
+
+<span class="t-k">export</span> <span class="t-k">type</span> CartItem = { product: Product; quantity: number };
+
+<span class="t-k">type</span> CartState = {
+  items: CartItem[];
+  add: (product: Product) =&gt; <span class="t-k">void</span>;
+  remove: (productId: number) =&gt; <span class="t-k">void</span>;
+  setQuantity: (productId: number, quantity: number) =&gt; <span class="t-k">void</span>;
+};
+
+<span class="t-k">export</span> <span class="t-k">const</span> useCartStore = create&lt;CartState&gt;((set) =&gt; ({
+  items: [],
+
+  add: (product) =&gt;
+    set((state) =&gt; {
+      <span class="t-k">const</span> existing = state.items.find((item) =&gt; item.product.id === product.id);
+      <span class="t-k">if</span> (!existing) <span class="t-k">return</span> { items: [...state.items, { product, quantity: <span class="t-n">1</span> }] };
+      <span class="t-k">return</span> {
+        items: state.items.map((item) =&gt;
+          item.product.id === product.id ? { ...item, quantity: item.quantity + <span class="t-n">1</span> } : item,
+        ),
+      };
+    }),
+
+  remove: (productId) =&gt; set((state) =&gt; ({ items: state.items.filter((item) =&gt; item.product.id !== productId) })),
+
+  setQuantity: (productId, quantity) =&gt;
+    set((state) =&gt; ({
+      items: state.items.map((item) =&gt;
+        item.product.id === productId ? { ...item, quantity: Math.max(<span class="t-n">1</span>, quantity || <span class="t-n">1</span>) } : item,
+      ),
+    })),
+}));</code></pre>
+</figure>
+<ul><li><code>create</code> builds the store. The object holds the data (<code>items</code>) and the actions that change it.</li><li><code>set((state) => ...)</code> builds the next state from the previous one. It never mutates the old array.</li><li><code>useCartStore((state) => state.add)</code> reads only the piece you need, so a component re-renders only when that piece changes.</li></ul>
+<h2 id="step-8-ui">3. Connect the UI</h2>
+<p>The drawer is plumbing, so paste it. The interesting change is that <b>nothing is passed through props</b>.</p>
+<figure class="code paste">
+  <figcaption><span class="file">client/src/components/CartDrawer.tsx</span><span class="badge paste">copy and paste</span><button class="copy" data-target="c63" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c63" class="lang-ts"><span class="t-k">import</span> { useCartStore } <span class="t-k">from</span> <span class="t-s">"../store/cartStore"</span>;
+
+<span class="t-k">type</span> Props = {
+  onClose: () =&gt; <span class="t-k">void</span>;
+};
+
+<span class="t-k">export</span> <span class="t-k">default</span> <span class="t-k">function</span> CartDrawer({ onClose }: Props) {
+  <span class="t-k">const</span> { items, remove, setQuantity } = useCartStore();
+  <span class="t-k">const</span> total = items.reduce((sum, item) =&gt; sum + item.product.price * item.quantity, <span class="t-n">0</span>);
+
+  <span class="t-k">return</span> (
+    &lt;&gt;
+      &lt;div className=<span class="t-s">"overlay"</span> onClick={onClose} /&gt;
+      &lt;aside className=<span class="t-s">"drawer"</span>&gt;
+        &lt;div className=<span class="t-s">"drawer-header"</span>&gt;
+          &lt;h2&gt;Your cart&lt;/h2&gt;
+          &lt;button className=<span class="t-s">"icon-btn"</span> onClick={onClose} aria-label=<span class="t-s">"Close cart"</span>&gt;
+            ✕
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div className=<span class="t-s">"drawer-body"</span>&gt;
+          {items.length === <span class="t-n">0</span> &amp;&amp; &lt;div className=<span class="t-s">"empty"</span>&gt;Your cart is empty&lt;/div&gt;}
+          {items.map(({ product, quantity }) =&gt; (
+            &lt;div className=<span class="t-s">"cart-row"</span> key={product.id}&gt;
+              &lt;img className=<span class="t-s">"cart-thumb"</span> src={product.image_url} alt=<span class="t-s">""</span> /&gt;
+              &lt;div className=<span class="t-s">"cart-info"</span>&gt;
+                &lt;div className=<span class="t-s">"cart-name"</span>&gt;{product.name}&lt;/div&gt;
+                &lt;div className=<span class="t-s">"cart-price"</span>&gt;${product.price.toFixed(<span class="t-n">2</span>)}&lt;/div&gt;
+              &lt;/div&gt;
+              &lt;input
+                className=<span class="t-s">"qty-input"</span>
+                <span class="t-k">type</span>=<span class="t-s">"number"</span>
+                min={<span class="t-n">1</span>}
+                value={quantity}
+                onChange={(e) =&gt; setQuantity(product.id, Number(e.target.value))}
+              /&gt;
+              &lt;button className=<span class="t-s">"btn btn-danger btn-sm"</span> onClick={() =&gt; remove(product.id)}&gt;
+                Remove
+              &lt;/button&gt;
+            &lt;/div&gt;
+          ))}
+        &lt;/div&gt;
+        &lt;div className=<span class="t-s">"drawer-footer"</span>&gt;
+          &lt;div className=<span class="t-s">"total-row"</span>&gt;
+            &lt;span&gt;Total&lt;/span&gt;
+            &lt;span&gt;${total.toFixed(<span class="t-n">2</span>)}&lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/aside&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+</figure>
+<figure class="code type">
+  <figcaption><span class="file">client/src/components/ProductCard.tsx</span><span class="badge type">type along</span><button class="copy" data-target="c64" type="button">Copy</button></figcaption>
+  <p class="code-note">The card now calls <code>add</code> from the store.</p>
+  <pre><code id="c64" class="lang-ts"><span class="t-k">import</span> { useCartStore } <span class="t-k">from</span> <span class="t-s">"../store/cartStore"</span>;
+<span class="t-k">import</span> <span class="t-k">type</span> { Product } <span class="t-k">from</span> <span class="t-s">"../types"</span>;
+
+<span class="t-k">type</span> Props = {
+  product: Product;
+};
+
+<span class="t-k">export</span> <span class="t-k">default</span> <span class="t-k">function</span> ProductCard({ product }: Props) {
+  <span class="t-k">const</span> add = useCartStore((state) =&gt; state.add);
+
+  <span class="t-k">return</span> (
+    &lt;article className=<span class="t-s">"card"</span>&gt;
+      &lt;img className=<span class="t-s">"card-img"</span> src={product.image_url} alt={product.name} /&gt;
+      &lt;div className=<span class="t-s">"card-body"</span>&gt;
+        &lt;span className=<span class="t-s">"card-category"</span>&gt;{product.category}&lt;/span&gt;
+        &lt;h3 className=<span class="t-s">"card-name"</span>&gt;{product.name}&lt;/h3&gt;
+        &lt;div className=<span class="t-s">"card-footer"</span>&gt;
+          &lt;span className=<span class="t-s">"price"</span>&gt;${product.price.toFixed(<span class="t-n">2</span>)}&lt;/span&gt;
+          &lt;button className=<span class="t-s">"btn btn-primary btn-sm"</span> onClick={() =&gt; add(product)}&gt;
+            Add to cart
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+  );
+}</code></pre>
+</figure>
+<figure class="code type">
+  <figcaption><span class="file">client/src/App.tsx</span><span class="badge type">type along</span><button class="copy" data-target="c65" type="button">Copy</button></figcaption>
+  <p class="code-note">A Cart button with a badge, and the drawer.</p>
+  <pre><code id="c65" class="lang-ts"><span class="t-k">import</span> { useState } <span class="t-k">from</span> <span class="t-s">"react"</span>;
+<span class="t-k">import</span> AddProductForm <span class="t-k">from</span> <span class="t-s">"./components/AddProductForm"</span>;
+<span class="t-k">import</span> CartDrawer <span class="t-k">from</span> <span class="t-s">"./components/CartDrawer"</span>;
+<span class="t-k">import</span> CategoryFilter <span class="t-k">from</span> <span class="t-s">"./components/CategoryFilter"</span>;
+<span class="t-k">import</span> ProductList <span class="t-k">from</span> <span class="t-s">"./components/ProductList"</span>;
+<span class="t-k">import</span> { CATEGORIES } <span class="t-k">from</span> <span class="t-s">"./constants"</span>;
+<span class="t-k">import</span> { useProducts } <span class="t-k">from</span> <span class="t-s">"./hooks/useProducts"</span>;
+<span class="t-k">import</span> { useCartStore } <span class="t-k">from</span> <span class="t-s">"./store/cartStore"</span>;
+
+<span class="t-k">export</span> <span class="t-k">default</span> <span class="t-k">function</span> App() {
+  <span class="t-k">const</span> { products, category, setCategory, loading, error, addProduct } = useProducts();
+  <span class="t-k">const</span> [formOpen, setFormOpen] = useState(<span class="t-k">false</span>);
+  <span class="t-k">const</span> [cartOpen, setCartOpen] = useState(<span class="t-k">false</span>);
+  <span class="t-k">const</span> cartCount = useCartStore((state) =&gt; state.items.length);
+
+  <span class="t-k">return</span> (
+    &lt;&gt;
+      &lt;header className=<span class="t-s">"header"</span>&gt;
+        &lt;div className=<span class="t-s">"brand"</span>&gt;
+          &lt;span className=<span class="t-s">"brand-mark"</span>&gt;M&lt;/span&gt; Mini Shop
+        &lt;/div&gt;
+        &lt;div className=<span class="t-s">"header-actions"</span>&gt;
+          &lt;button className=<span class="t-s">"btn"</span> onClick={() =&gt; setFormOpen((open) =&gt; !open)}&gt;
+            + Add product
+          &lt;/button&gt;
+          &lt;button className=<span class="t-s">"btn btn-primary"</span> onClick={() =&gt; setCartOpen(<span class="t-k">true</span>)}&gt;
+            Cart &lt;span className=<span class="t-s">"badge"</span>&gt;{cartCount}&lt;/span&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+
+      &lt;main className=<span class="t-s">"main"</span>&gt;
+        &lt;h1 className=<span class="t-s">"page-title"</span>&gt;{category === <span class="t-s">"All"</span> ? <span class="t-s">"All products"</span> : category}&lt;/h1&gt;
+        &lt;p className=<span class="t-s">"page-subtitle"</span>&gt;{loading ? <span class="t-s">"Loading..."</span> : <span class="t-s">`${products.length} products`</span>}&lt;/p&gt;
+        {formOpen &amp;&amp; (
+          &lt;AddProductForm
+            onSubmit={<span class="t-k">async</span> (input) =&gt; {
+              <span class="t-k">await</span> addProduct(input);
+              setFormOpen(<span class="t-k">false</span>);
+            }}
+            onCancel={() =&gt; setFormOpen(<span class="t-k">false</span>)}
+          /&gt;
+        )}
+        &lt;CategoryFilter categories={CATEGORIES} selected={category} onSelect={setCategory} /&gt;
+        {error &amp;&amp; &lt;p className=<span class="t-s">"status error"</span>&gt;{error}&lt;/p&gt;}
+        {!loading &amp;&amp; !error &amp;&amp; &lt;ProductList products={products} /&gt;}
+      &lt;/main&gt;
+
+      {cartOpen &amp;&amp; &lt;CartDrawer onClose={() =&gt; setCartOpen(<span class="t-k">false</span>)} /&gt;}
+    &lt;/&gt;
+  );
+}</code></pre>
+</figure>
+<aside class="callout checkpoint"><strong>Checkpoint</strong><p><b>Add to cart</b> on a few products: the badge in the header goes up. Switch to another category and add more, and the badge keeps counting, because the cart is not tied to the list. Open the cart, change a quantity (the total updates), and remove an item.</p></aside>
+<aside class="say presenter"><strong>Say</strong>This is global state. Compare: the filter (step 1) is local state with one owner. The cart is global state with many readers. Use local state first and reach for a store only when sharing starts to hurt.</aside>
+<h2 id="step-8-catchup">Fell behind? Catch up</h2>
+<p>Jump to the finished state of this step. This discards your local changes in the working folder.</p>
+<figure class="code ">
+  <figcaption><span class="file">Terminal</span><button class="copy" data-target="c66" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c66" class="lang-bash">git checkout -f step-<span class="t-n">8</span>-cart-zustand</code></pre>
+</figure>
+<p>Want to keep your own work first? Run <code>git stash -u</code> before the checkout.</p>
+  </section>
+<section class="page" id="wrapup">
+    <div class="kicker">Wrap-up</div>
+    <h1>Wrap-up and quiz</h1>
+    <p class="lead">Recap what you built, where to go next, and a quiz to finish.</p>
+    <div class="meta"><span><b>Time</b> 3:15 to 3:30 (15 min)</span><span><b>Branch</b> <code>final</code></span></div>
+    <h2 id="wrapup-recap">1. What you built</h2>
+<figure class="code ">
+  <figcaption><span class="file">The whole app</span><button class="copy" data-target="c67" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c67" class="lang-text">Browser:  App -&gt; useProducts hook -&gt; api layer ----\
+                 cart store (zustand)              |  HTTP (CORS allows our site)
+Server:   routes -&gt; controllers -&gt; Zod validation -&gt; db  &lt;-- Neon Postgres</code></pre>
+</figure>
+<div class="table-wrap"><table><thead><tr><th>You learned</th><th>Where you used it</th></tr></thead><tbody><tr><td>Local state, lists and props</td><td>the product page (step 1)</td></tr><tr><td>Routing, health checks, CORS</td><td>the server (step 2)</td></tr><tr><td>Databases, connections, env files, seeding</td><td>Neon (step 3)</td></tr><tr><td>The api layer and custom hooks</td><td>useProducts (step 4)</td></tr><tr><td>Forms and validation with Zod</td><td>the Add product form (steps 5 and 6)</td></tr><tr><td>Postman and DELETE</td><td>step 7</td></tr><tr><td>Global state</td><td>the cart store (step 8)</td></tr></tbody></table></div>
+<h2 id="wrapup-next">2. Where to go next</h2>
+<ul><li>Add a delete button to the UI that calls the DELETE endpoint</li><li>Search and sorting</li><li>Tests with Vitest and Supertest</li><li>Login with a users table</li><li>Deploy it (see the Deploy page)</li><li>The bonus lab: keys and the React Profiler</li></ul>
+<aside class="say presenter"><strong>Say</strong>Use AI tools, but read every line, run it, and know why it works. Ask them to explain, not only to generate.</aside>
+<h2 id="wrapup-quiz">3. The quiz</h2>
+<p>A live, Kahoot-style quiz with 12 questions, 20 seconds each. Faster correct answers score more. The top three win 3, 2 and 1 mentoring sessions. The Facilitator guide explains how to run it.</p>
+  </section>
+<section class="page" id="bonus">
+    <div class="kicker">Bonus</div>
+    <h1>Keys and the React Profiler</h1>
+    <p class="lead">A small lab about why the key prop matters and how to measure re-renders. Do it if there is time, or at home.</p>
+    <div class="meta"><span><b>Branch</b> <code>bonus</code> (built on top of <code>final</code>)</span><span><b>Time</b> about 15 min</span></div>
+    <h2 id="bonus-go">1. Get the lab</h2>
+<figure class="code ">
+  <figcaption><span class="file">Terminal</span><button class="copy" data-target="c68" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c68" class="lang-bash">git checkout bonus
+npm run dev</code></pre>
+</figure>
+<p>Open <a href='http://localhost:5173/?lab=keys'>http://localhost:5173/?lab=keys</a>.</p>
+<figure class="code paste">
+  <figcaption><span class="file">client/src/components/KeysLab.tsx</span><span class="badge paste">copy and paste</span><button class="copy" data-target="c69" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c69" class="lang-ts"><span class="t-k">import</span> { Profiler, useState, useSyncExternalStore } <span class="t-k">from</span> <span class="t-s">"react"</span>;
+<span class="t-k">import</span> <span class="t-k">type</span> { Product } <span class="t-k">from</span> <span class="t-s">"../types"</span>;
+<span class="t-k">import</span> ProductCard <span class="t-k">from</span> <span class="t-s">"./ProductCard"</span>;
+
+<span class="t-c">// Open the app at /?lab=keys to use this page.</span>
+
+<span class="t-k">const</span> baseProducts: Product[] = [
+  { id: <span class="t-n">1</span>, name: <span class="t-s">"iPhone 5s"</span>, price: <span class="t-n">199.99</span>, category: <span class="t-s">"Electronics"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/smartphones/iphone-5s/thumbnail.webp"</span> },
+  { id: <span class="t-n">2</span>, name: <span class="t-s">"Check Shirt"</span>, price: <span class="t-n">29.99</span>, category: <span class="t-s">"Clothing"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/mens-shirts/blue-&amp;-black-check-shirt/thumbnail.webp"</span> },
+  { id: <span class="t-n">3</span>, name: <span class="t-s">"Colombo Sofa"</span>, price: <span class="t-n">2499.99</span>, category: <span class="t-s">"Home"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/furniture/annibale-colombo-sofa/thumbnail.webp"</span> },
+  { id: <span class="t-n">4</span>, name: <span class="t-s">"Black Sunglasses"</span>, price: <span class="t-n">29.99</span>, category: <span class="t-s">"Accessories"</span>, image_url: <span class="t-s">"https://cdn.dummyjson.com/product-images/sunglasses/black-sun-glasses/thumbnail.webp"</span> },
+];
+
+<span class="t-k">type</span> Item = { id: number; label: string };
+<span class="t-k">const</span> initialItems: Item[] = [
+  { id: <span class="t-n">1</span>, label: <span class="t-s">"Apples"</span> },
+  { id: <span class="t-n">2</span>, label: <span class="t-s">"Bananas"</span> },
+  { id: <span class="t-n">3</span>, label: <span class="t-s">"Cherries"</span> },
+  { id: <span class="t-n">4</span>, label: <span class="t-s">"Dates"</span> },
+];
+
+<span class="t-k">function</span> KeysDemo() {
+  <span class="t-k">const</span> [items, setItems] = useState(initialItems);
+  <span class="t-k">const</span> [useIndexKey, setUseIndexKey] = useState(<span class="t-k">true</span>);
+
+  <span class="t-k">return</span> (
+    &lt;section className=<span class="t-s">"lab"</span>&gt;
+      &lt;h2&gt;Part A: keys&lt;/h2&gt;
+      &lt;p className=<span class="t-s">"lab-note"</span>&gt;
+        Type a note <span class="t-k">in</span> each row, then click <span class="t-s">"Remove first"</span>. With key=index the notes stay <span class="t-k">in</span> the
+        same positions and end up on the wrong rows. With key=id they follow their item.
+      &lt;/p&gt;
+      &lt;div className=<span class="t-s">"lab-controls"</span>&gt;
+        &lt;button className=<span class="t-s">"btn"</span> onClick={() =&gt; setUseIndexKey((v) =&gt; !v)}&gt;
+          Using key={useIndexKey ? <span class="t-s">"index (wrong)"</span> : <span class="t-s">"id (right)"</span>}
+        &lt;/button&gt;
+        &lt;button className=<span class="t-s">"btn"</span> onClick={() =&gt; setItems((prev) =&gt; prev.slice(<span class="t-n">1</span>))}&gt;
+          Remove first
+        &lt;/button&gt;
+        &lt;button className=<span class="t-s">"btn"</span> onClick={() =&gt; setItems(initialItems)}&gt;
+          Reset
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div className=<span class="t-s">"lab-list"</span>&gt;
+        {items.map((item, index) =&gt; (
+          &lt;div className=<span class="t-s">"lab-row"</span> key={useIndexKey ? index : item.id}&gt;
+            &lt;span&gt;{item.label}&lt;/span&gt;
+            &lt;input className=<span class="t-s">"qty-input"</span> style={{ width: <span class="t-n">160</span> }} placeholder=<span class="t-s">"note"</span> /&gt;
+          &lt;/div&gt;
+        ))}
+      &lt;/div&gt;
+    &lt;/section&gt;
+  );
+}
+
+<span class="t-k">const</span> manyProducts: Product[] = Array.<span class="t-k">from</span>({ length: <span class="t-n">100</span> }, (_, i) =&gt; ({
+  ...baseProducts[i % baseProducts.length],
+  id: i + <span class="t-n">1</span>,
+}));
+
+<span class="t-c">// Profiler results live outside React state, so showing them does not re-render the profiled tree.</span>
+<span class="t-k">let</span> stats = { commits: <span class="t-n">0</span>, last: <span class="t-n">0</span> };
+<span class="t-k">const</span> listeners = <span class="t-k">new</span> Set&lt;() =&gt; <span class="t-k">void</span>&gt;();
+<span class="t-k">const</span> subscribe = (fn: () =&gt; <span class="t-k">void</span>) =&gt; {
+  listeners.add(fn);
+  <span class="t-k">return</span> () =&gt; listeners.delete(fn);
+};
+<span class="t-k">const</span> recordRender = (_id: string, phase: string, actualDuration: number) =&gt; {
+  <span class="t-k">if</span> (phase !== <span class="t-s">"update"</span>) <span class="t-k">return</span>;
+  stats = { commits: stats.commits + <span class="t-n">1</span>, last: actualDuration };
+  listeners.forEach((fn) =&gt; fn());
+};
+
+<span class="t-k">function</span> ProfilerStats() {
+  <span class="t-k">const</span> { commits, last } = useSyncExternalStore(subscribe, () =&gt; stats);
+  <span class="t-k">return</span> (
+    &lt;span&gt;
+      Profiler: {commits} updates, last render {last.toFixed(<span class="t-n">1</span>)} ms
+    &lt;/span&gt;
+  );
+}
+
+<span class="t-k">function</span> ProfilerDemo() {
+  <span class="t-k">const</span> [tick, setTick] = useState(<span class="t-n">0</span>);
+
+  <span class="t-k">return</span> (
+    &lt;section className=<span class="t-s">"lab"</span> style={{ marginTop: <span class="t-n">40</span> }}&gt;
+      &lt;h2&gt;Part B: Profiler and React.memo&lt;/h2&gt;
+      &lt;p className=<span class="t-s">"lab-note"</span>&gt;
+        ProductCard is wrapped <span class="t-k">in</span> React.memo. Click <span class="t-s">"Re-render parent"</span> and watch the Profiler numbers.
+        Then remove memo <span class="t-k">from</span> ProductCard.tsx, save, and click again.
+      &lt;/p&gt;
+      &lt;div className=<span class="t-s">"lab-controls"</span>&gt;
+        &lt;button className=<span class="t-s">"btn btn-primary"</span> onClick={() =&gt; setTick((t) =&gt; t + <span class="t-n">1</span>)}&gt;
+          Re-render parent ({tick})
+        &lt;/button&gt;
+        &lt;ProfilerStats /&gt;
+      &lt;/div&gt;
+      &lt;Profiler id=<span class="t-s">"products"</span> onRender={recordRender}&gt;
+        &lt;div className=<span class="t-s">"grid"</span>&gt;
+          {manyProducts.map((product) =&gt; (
+            &lt;ProductCard key={product.id} product={product} /&gt;
+          ))}
+        &lt;/div&gt;
+      &lt;/Profiler&gt;
+    &lt;/section&gt;
+  );
+}
+
+<span class="t-k">export</span> <span class="t-k">default</span> <span class="t-k">function</span> KeysLab() {
+  <span class="t-k">return</span> (
+    &lt;&gt;
+      &lt;KeysDemo /&gt;
+      &lt;ProfilerDemo /&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+</figure>
+<h2 id="bonus-a">2. Part A: keys</h2>
+<ol><li>Type a different note into each row.</li><li>Click <b>Remove first</b>. With <code>key=index</code> the notes stay in their positions, so they end up under the wrong items.</li><li>Click the toggle to switch to <code>key=id</code>, click <b>Reset</b>, and repeat. The notes now follow their items.</li></ol>
+<aside class="say presenter"><strong>Say</strong>React uses the key to decide which element belongs to which item. With an index, the item at position 0 is always 'the same one', even after you delete it.</aside>
+<h2 id="bonus-b">3. Part B: Profiler and React.memo</h2>
+<ol><li>Click <b>Re-render parent</b> a few times and read the Profiler line. With <code>memo</code> on <code>ProductCard</code> the 100 cards barely re-render (about 0 to 1 ms).</li><li>In <code>ProductCard.tsx</code> change the last line to <code>export default ProductCard;</code>, save, and click again. It takes about 10 ms.</li><li>Put <code>memo</code> back.</li></ol>
+<aside class="callout tip"><strong>Measure before you optimise</strong><p>memo skips a component when its props did not change. Most components do not need it. Use the Profiler to find the ones that do.</p></aside>
+  </section>
+<section class="page" id="deploy">
+    <div class="kicker">Extras</div>
+    <h1>Deploy it</h1>
+    <p class="lead">API on Render, client on Vercel, database on Neon. Everything deploys from the <code>final</code> branch. Deploy the API first, because the client needs its URL.</p>
+    <div class="meta"><span><b>Branch</b> <code>final</code></span></div>
+    <aside class="say presenter"><strong>Say</strong>If you demo this, rehearse it once beforehand. Free tiers need about a minute to wake up.</aside>
+<h2 id="deploy-push">1. Push your code to GitHub</h2>
+<figure class="code ">
+  <figcaption><span class="file">Terminal</span><button class="copy" data-target="c70" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c70" class="lang-bash">git checkout final
+git remote add mine &lt;your repo url&gt;
+git push -u mine final</code></pre>
+</figure>
+<h2 id="deploy-render">2. API on Render</h2>
+<ol><li>Render dashboard &gt; <b>New</b> &gt; <b>Blueprint</b>, pick your repo and the <code>final</code> branch. Render reads <code>render.yaml</code>.</li><li>Set <code>DATABASE_URL</code> to your Neon string. Leave <code>CLIENT_ORIGIN</code> for now.</li><li>Open <code>https://&lt;your-service&gt;.onrender.com/api/health</code>. You should see <code>{"status":"ok"}</code>. This is the health endpoint from step 2, and Render calls it to know your app is alive.</li></ol>
+<figure class="code paste">
+  <figcaption><span class="file">render.yaml</span><span class="badge paste">copy and paste</span><button class="copy" data-target="c71" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c71" class="lang-yaml">services:
+  - <span class="t-k">type</span>: web
+    name: mini-shop-api
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm run start -w server
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: <span class="t-n">22</span>
+      - key: DATABASE_URL
+        sync: <span class="t-k">false</span>
+      - key: CLIENT_ORIGIN
+        sync: <span class="t-k">false</span></code></pre>
+</figure>
+<aside class="callout tip"><strong>Why is tsx a normal dependency?</strong><p>Render installs only production dependencies. The server runs TypeScript through <code>tsx</code>, so on the <code>final</code> branch it is listed as a normal dependency.</p></aside>
+<h2 id="deploy-seed">3. The same database</h2>
+<p>You already seeded your Neon database in step 3. Render connects to that same database through <code>DATABASE_URL</code>, so there is nothing more to seed.</p>
+<h2 id="deploy-vercel">4. Client on Vercel</h2>
+<ol><li>Vercel &gt; <b>Add New</b> &gt; <b>Project</b>, pick the repo.</li><li>Set <b>Root Directory</b> to <code>client</code> and turn on <b>Include source files outside of the Root Directory</b> (the app lives in an npm workspace). Preset: <b>Vite</b>.</li><li>Add the environment variable <code>VITE_API_URL</code> = <code>https://&lt;your-service&gt;.onrender.com/api</code>.</li><li>Deploy and copy your Vercel URL.</li></ol>
+<h2 id="deploy-cors">5. Whitelist your site</h2>
+<p>The CORS lesson again, for real: in Render set <code>CLIENT_ORIGIN</code> to your Vercel URL, with no trailing slash. Render redeploys by itself.</p>
+<figure class="code ">
+  <figcaption><span class="file">Render environment</span><button class="copy" data-target="c72" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c72" class="lang-env">CLIENT_ORIGIN=https://your-app.vercel.app</code></pre>
+</figure>
+<div class="table-wrap"><table><thead><tr><th>Symptom</th><th>Likely cause</th></tr></thead><tbody><tr><td>Products fail to load and the console says CORS</td><td><code>CLIENT_ORIGIN</code> is wrong or has a trailing slash</td></tr><tr><td>The page calls <code>localhost:3001</code></td><td><code>VITE_API_URL</code> is not set. It is read at build time, so redeploy after setting it</td></tr><tr><td>The API returns 500</td><td>Check the Render logs. Usually <code>DATABASE_URL</code> is wrong</td></tr><tr><td>The first load takes a long time</td><td>Free-tier cold start. Wait about a minute</td></tr></tbody></table></div>
+  </section>
+<section class="page" id="cheatsheet">
+    <div class="kicker">Reference</div>
+    <h1>Cheat sheet and troubleshooting</h1>
+    
+    
+    <h2 id="cheatsheet-branches">Branches</h2>
+<div class="table-wrap"><table><thead><tr><th>Branch</th><th>State at the end of the step</th></tr></thead><tbody><tr><td><code>starter</code></td><td>boilerplate: packages, styling, an empty app shell, an almost empty server, the check script</td></tr><tr><td><code>step-1-ui-sample-data</code></td><td>product page with sample data, pictures and category filters</td></tr><tr><td><code>step-2-server-cors</code></td><td>Express app: health, an empty products list, CORS</td></tr><tr><td><code>step-3-database</code></td><td>Neon connection, seed script, products served from the database</td></tr><tr><td><code>step-4-api-hook</code></td><td>the client uses the API through an api layer and the useProducts hook</td></tr><tr><td><code>step-5-add-product</code></td><td>Add product form and the create endpoint, with no validation</td></tr><tr><td><code>step-6-validation</code></td><td>Zod validation on the server and in the form</td></tr><tr><td><code>step-7-delete-postman</code></td><td>the delete endpoint and a Postman collection</td></tr><tr><td><code>step-8-cart-zustand</code></td><td>the cart with a zustand store</td></tr><tr><td><code>final</code></td><td>the finished app, plus the deploy files</td></tr><tr><td><code>bonus</code></td><td>the keys and Profiler lab, on top of final</td></tr></tbody></table></div>
+<h2 id="cheatsheet-git">Git: catch up or switch</h2>
+<figure class="code ">
+  <figcaption><span class="file">Terminal</span><button class="copy" data-target="c73" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c73" class="lang-bash">git stash -u                       <span class="t-c"># optional: keep your own work</span>
+git checkout -f step-<span class="t-n">3</span>-database     <span class="t-c"># jump to any step</span>
+git branch --show-current           <span class="t-c"># which branch am I on?</span></code></pre>
+</figure>
+<h2 id="cheatsheet-commands">Commands</h2>
+<div class="table-wrap"><table><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>npm run dev</code></td><td>start the client (5173) and the server (3001)</td></tr><tr><td><code>npm run check</code></td><td>check Node, Git, packages, database and ports</td></tr><tr><td><code>npm run db:seed</code></td><td>create the table and seed products (safe to repeat)</td></tr><tr><td><code>npm run db:reset</code></td><td>drop the table and seed it again</td></tr><tr><td><code>npm run typecheck</code></td><td>type-check both sides</td></tr></tbody></table></div>
+<h2 id="cheatsheet-api">API endpoints</h2>
+<div class="table-wrap"><table><thead><tr><th>Method</th><th>URL</th><th>Body</th><th>Answers</th></tr></thead><tbody><tr><td>GET</td><td><code>/api/health</code></td><td>none</td><td>200 and <code>{status: 'ok'}</code></td></tr><tr><td>GET</td><td><code>/api/products</code></td><td>none</td><td>200 and an array of products</td></tr><tr><td>POST</td><td><code>/api/products</code></td><td>name, price, category, image_url</td><td>201, or 400 (from step 6)</td></tr><tr><td>DELETE</td><td><code>/api/products/:id</code></td><td>none</td><td>204, 400, or 404 (step 7)</td></tr></tbody></table></div>
+<h2 id="cheatsheet-env">Environment variables (server/.env)</h2>
+<div class="table-wrap"><table><thead><tr><th>Name</th><th>Meaning</th></tr></thead><tbody><tr><td><code>PORT</code></td><td>API port, default 3001</td></tr><tr><td><code>CLIENT_ORIGIN</code></td><td>which website may call the API (CORS)</td></tr><tr><td><code>DATABASE_URL</code></td><td>your Neon connection string</td></tr></tbody></table></div>
+<h2 id="cheatsheet-problems">Common problems</h2>
+<div class="table-wrap"><table><thead><tr><th>Symptom</th><th>Cause and fix</th></tr></thead><tbody><tr><td>Blank page, console shows an import error</td><td>A file is missing or misspelled. Compare with the branch for this step</td></tr><tr><td>TypeScript red squiggles on a correct-looking line</td><td>Run <code>npm run typecheck</code> and read the first error only</td></tr><tr><td>The page does not update after saving</td><td>Check the terminal for an error. Restart <code>npm run dev</code></td></tr><tr><td><code>EADDRINUSE</code> on port 3001 or 5173</td><td>Another copy is running. Close it, or restart your computer</td></tr><tr><td>CORS error in the console</td><td><code>CLIENT_ORIGIN</code> must match the page address exactly, with no trailing slash. Restart the server after editing .env</td></tr><tr><td><i>DATABASE_URL is missing</i></td><td>Paste your Neon string into <code>server/.env</code>, save, and the server restarts</td></tr><tr><td>The faulty product is still there</td><td>Run the DELETE in the Neon SQL Editor, then reload the page</td></tr><tr><td>An SSL mode warning with Neon</td><td>Printed by the database library. It is harmless</td></tr></tbody></table></div>
+  </section>
+<section class="page presenter" id="facilitator">
+    <div class="kicker">Presenter only</div>
+    <h1>Facilitator guide</h1>
+    <p class="lead">Timeline, preparation, timing rules and what to do when the room runs slow.</p>
+    
+    <h2 id="facilitator-timeline">Timeline (3.5 hours)</h2>
+<div class="table-wrap"><table><thead><tr><th>Time</th><th>Block</th><th>Branch you end on</th><th>Priority</th></tr></thead><tbody><tr><td>0:00 to 0:15</td><td>Intro: about you, what we build, demo video, prerequisites, repo link</td><td>none</td><td>must</td></tr><tr><td>0:15 to 0:25</td><td>Setup and the check script</td><td><code>starter</code></td><td>must</td></tr><tr><td>0:25 to 0:50</td><td>Step 1: UI, pictures, filters, sample data</td><td><code>step-1-ui-sample-data</code></td><td>must</td></tr><tr><td>0:50 to 1:10</td><td>Step 2: server, health, empty list, CORS</td><td><code>step-2-server-cors</code></td><td>must</td></tr><tr><td>1:10 to 1:20</td><td>Break</td><td></td><td></td></tr><tr><td>1:20 to 1:50</td><td>Step 3: Neon, db files, seed, serve real data</td><td><code>step-3-database</code></td><td>must</td></tr><tr><td>1:50 to 2:10</td><td>Step 4: api layer, then the hook</td><td><code>step-4-api-hook</code></td><td>must</td></tr><tr><td>2:10 to 2:30</td><td>Step 5: form, create endpoint, faulty product</td><td><code>step-5-add-product</code></td><td>must</td></tr><tr><td>2:30 to 2:45</td><td>Step 6: Zod validation, clean product</td><td><code>step-6-validation</code></td><td>must</td></tr><tr><td>2:45 to 3:00</td><td>Step 7: delete endpoint, Postman, env files</td><td><code>step-7-delete-postman</code></td><td>must</td></tr><tr><td>3:00 to 3:15</td><td>Step 8: cart and zustand</td><td><code>step-8-cart-zustand</code></td><td>nice</td></tr><tr><td>3:15 to 3:30</td><td>Wrap-up and the quiz</td><td><code>final</code></td><td>must</td></tr></tbody></table></div>
+<p><b>Plan for about 150 minutes of content in 210.</b> A group new to React takes 1.5 to 2 times as long at each step. The final steps are where you will feel it.</p>
+<h2 id="facilitator-before">Before the day</h2>
+<ul><li>Run the whole workshop yourself once from a clean clone, ideally on a different laptop and a fresh Neon project.</li><li>Send the prerequisites a week ahead and ask everyone for a screenshot of <code>npm run check</code>.</li><li>Open on the projector: the finished app on <code>final</code>, the Neon dashboard, Postman, and the demo video.</li><li>Neon is mandatory. Make sure everyone can sign up. A student whose Neon fails pairs with a neighbour.</li><li>Check the venue wifi and bring a phone hotspot. <code>npm install</code> is the biggest risk.</li><li>If you will run the quiz, test it with real phones on the venue wifi.</li></ul>
+<h2 id="facilitator-rules">Running the room</h2>
+<ul><li><b>Type the lesson, paste the plumbing.</b> The guide marks each file as type-along or paste.</li><li><b>One checkpoint per step.</b> Do not move on until most people see it.</li><li><b>Pair beginners with stronger students</b> from step 3 on.</li><li><b>Do not debug one laptop for more than two minutes.</b> Give them the catch-up command and come back later.</li><li><b>Never lose the thread.</b> Re-draw the big picture on the board at the start of steps 2, 3 and 4.</li></ul>
+<h2 id="facilitator-cut">If you are running late: cut order</h2>
+<ol><li>Step 8: demo it from the branch instead of typing it (the cart is a good demo).</li><li>Shorten the quiz to 6 questions.</li><li>Step 7: skip the delete endpoint and keep only Postman: GET and POST.</li><li>Step 4: paste the hook instead of typing it.</li><li>Never cut: the big picture, step 3 (the database), the faulty product demo, and the catch-up commands.</li></ol>
+<h2 id="facilitator-quiz">Running the quiz</h2>
+<p>A live Kahoot-style quiz: 12 questions, 20 seconds each, faster correct answers score more. The top three win 3, 2 and 1 mentoring sessions.</p>
+<figure class="code ">
+  <figcaption><span class="file">Start it</span><button class="copy" data-target="c74" type="button">Copy</button></figcaption>
+  
+  <pre><code id="c74" class="lang-bash">cd quiz
+npm install     <span class="t-c"># first time only</span>
+npm start</code></pre>
+</figure>
+<ul><li>Open the <b>host URL</b> printed in the terminal on the projector browser and press F11. Players scan the QR code on that screen.</li><li><b>Space</b> continues, <b>M</b> mutes. Click a name in the lobby to remove a player.</li><li>Rehearse alone with fake players: <code>PIN=&lt;pin&gt; npm run bots -- 12</code>, and join once from your own phone.</li><li>Edit questions, timings and prizes in <code>quiz/questions.mjs</code>.</li></ul>
+<aside class="callout warn presenter"><strong>Test the wifi before the day</strong><p>Many venue networks block phones from reaching your laptop (client isolation). Test with a few phones at the venue. Fallback: run <code>cloudflared tunnel --url http://localhost:3000</code> and start the quiz with <code>PUBLIC_URL=&lt;tunnel address&gt; npm start</code>, so students can use mobile data. Details in <code>quiz/README.md</code>.</p></aside>
+<h2 id="facilitator-answers">Questions you will get</h2>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>Short answer</th></tr></thead><tbody><tr><td>Why TypeScript and not JavaScript?</td><td>Types catch mistakes while you type. The code is the same, so beginners can ignore the annotations at first.</td></tr><tr><td>Why not Next.js?</td><td>One new tool at a time. Next.js is the natural next step and uses the same React ideas.</td></tr><tr><td>Why fetch and not axios?</td><td>Fetch is built in, so there is one less package to learn. Axios works just as well.</td></tr><tr><td>Why zustand and not Redux or Context?</td><td>It is the smallest way to show the idea of a store. Redux and Context solve the same problem with more setup.</td></tr><tr><td>Is the Neon free tier enough?</td><td>Yes, for a workshop and small projects. It scales to zero when idle.</td></tr><tr><td>How do I add login?</td><td>A users table, hashed passwords, and a session or JWT. A great follow-up project.</td></tr><tr><td>Can AI write this for me?</td><td>It can draft it. You still need to read, run and understand every line, or you cannot debug it.</td></tr></tbody></table></div>
+  </section>
+  </main>
+</div>
+<script>(function () {
+  var body = document.body;
+  function safe(fn) { try { return fn(); } catch (e) { return null; } }
+
+  var box = document.getElementById("presenter");
+  var on = safe(function () { return localStorage.getItem("presenter") === "1"; }) || location.search.indexOf("presenter") > -1;
+  box.checked = on; body.classList.toggle("show-presenter", on);
+  box.addEventListener("change", function () {
+    body.classList.toggle("show-presenter", box.checked);
+    safe(function () { localStorage.setItem("presenter", box.checked ? "1" : "0"); });
+  });
+
+  document.getElementById("menu").addEventListener("click", function () { body.classList.toggle("menu-open"); });
+  document.getElementById("nav").addEventListener("click", function (e) { if (e.target.tagName === "A") body.classList.remove("menu-open"); });
+
+  document.addEventListener("click", function (e) {
+    var btn = e.target.closest(".copy");
+    if (!btn) return;
+    var text = document.getElementById(btn.getAttribute("data-target")).textContent;
+    var done = function () { btn.textContent = "Copied"; btn.classList.add("done"); setTimeout(function () { btn.textContent = "Copy"; btn.classList.remove("done"); }, 1400); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
+    function fallback() { var t = document.createElement("textarea"); t.value = text; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); done(); } catch (err) {} t.remove(); }
+  });
+
+  var links = [].slice.call(document.querySelectorAll("nav a"));
+  var pages = links.map(function (a) { return document.querySelector(a.getAttribute("href")); });
+  function spy() {
+    var y = window.scrollY + 120, idx = 0;
+    pages.forEach(function (p, i) { if (p && p.offsetParent !== null && p.offsetTop <= y) idx = i; });
+    links.forEach(function (a, i) { a.classList.toggle("current", i === idx); });
+  }
+  addEventListener("scroll", spy, { passive: true }); spy();
+})();
+</script>
+</body>
+</html>
