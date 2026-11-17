@@ -6,6 +6,7 @@ import { apiRouter } from "./routes/index.js";
 const app = express();
 
 app.use(cors({ origin: config.clientOrigin }));
+app.use(express.json());
 
 app.use("/api", apiRouter);
 
