@@ -1,14 +1,10 @@
-import { useState } from "react";
 import CategoryFilter from "./components/CategoryFilter";
 import ProductList from "./components/ProductList";
 import { CATEGORIES } from "./constants";
-import { sampleProducts } from "./data/sampleProducts";
+import { useProducts } from "./hooks/useProducts";
 
 export default function App() {
-  const [category, setCategory] = useState("All");
-
-  const products =
-    category === "All" ? sampleProducts : sampleProducts.filter((product) => product.category === category);
+  const { products, category, setCategory, loading, error } = useProducts();
 
   return (
     <>
@@ -20,9 +16,10 @@ export default function App() {
 
       <main className="main">
         <h1 className="page-title">{category === "All" ? "All products" : category}</h1>
-        <p className="page-subtitle">{products.length} products</p>
+        <p className="page-subtitle">{loading ? "Loading..." : `${products.length} products`}</p>
         <CategoryFilter categories={CATEGORIES} selected={category} onSelect={setCategory} />
-        <ProductList products={products} />
+        {error && <p className="status error">{error}</p>}
+        {!loading && !error && <ProductList products={products} />}
       </main>
     </>
   );
