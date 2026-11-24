@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mini Shop: Full-Stack Workshop</title>
+<style>
+  :root { --bg:#0f1226; --panel:#181c3a; --text:#eef0ff; --muted:#a3a9d1; --accent:#818cf8; --ok:#4ade80; --bad:#f87171; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; height:100%; background:var(--bg); color:var(--text); font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; overflow:hidden; }
+  .slide { position:absolute; inset:0; display:none; flex-direction:column; justify-content:center; padding:5vh 8vw; gap:2.2vh; }
+  .slide.active { display:flex; }
+  h1 { font-size:5.2vw; margin:0; line-height:1.1; }
+  h2 { font-size:3.4vw; margin:0 0 1vh; }
+  p, li { font-size:2vw; line-height:1.45; margin:0; }
+  ul { margin:0; padding-left:2.2vw; display:flex; flex-direction:column; gap:1.2vh; }
+  .muted { color:var(--muted); }
+  .tag { font-size:1.4vw; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:700; }
+  code, pre { font-family: ui-monospace,Menlo,Consolas,monospace; }
+  pre { background:var(--panel); border-radius:12px; padding:2vh 2vw; font-size:1.55vw; line-height:1.5; margin:0; overflow:hidden; white-space:pre-wrap; }
+  code.i { background:var(--panel); padding:.1em .4em; border-radius:6px; font-size:.9em; }
+  .row { display:flex; gap:2vw; align-items:stretch; }
+  .row > * { flex:1; }
+  .box { background:var(--panel); border-radius:14px; padding:2.4vh 1.6vw; }
+  .box h3 { margin:0 0 1vh; font-size:2.1vw; color:var(--accent); }
+  .box p, .box li { font-size:1.6vw; }
+  .flow { display:flex; align-items:center; gap:1.2vw; }
+  .flow .node { flex:1; text-align:center; background:var(--panel); border:2px solid var(--accent); border-radius:14px; padding:3vh 1vw; font-size:2.2vw; font-weight:700; }
+  .flow .node small { display:block; font-size:1.4vw; color:var(--muted); font-weight:500; margin-top:.8vh; }
+  .flow .arrow { font-size:3vw; color:var(--accent); }
+  .good { color:var(--ok); } .badc { color:var(--bad); }
+  table { border-collapse:collapse; font-size:1.7vw; width:100%; }
+  td, th { text-align:left; padding:1vh 1vw; border-bottom:1px solid #2a2f5a; }
+  th { color:var(--accent); }
+  a { color:var(--accent); }
+  table.links td { font-size:1.55vw; border-bottom:1px solid #2a2f5a; padding:1vh .6vw; }
+  table.links td:first-child { color:var(--muted); width:7vw; }
+  svg.qr { width:11vw; height:11vw; border-radius:10px; flex:none; }
+  .prize-row { display:flex; gap:2vw; }
+  .prize-row .box { text-align:center; flex:1; } .prize-row .big { font-size:6vw; font-weight:900; line-height:1; } .prize-row .big small { font-size:1.8vw; display:block; font-weight:600; color:var(--muted); margin-top:1vh; }
+  .hud { position:fixed; right:2vw; bottom:2vh; color:var(--muted); font-size:1.2vw; }
+  .bar { position:fixed; left:0; bottom:0; height:.6vh; background:var(--accent); transition:width .2s; }
+</style>
+</head>
+<body>
+
+<section class="slide">
+  <div class="tag">Workshop</div>
+  <h1>From Click to Database</h1>
+  <p class="muted">Build a full-stack app step by step: React, Express and Postgres</p>
+  <p class="muted">Marwan Mostafa · 3.5 hours · hands-on</p>
+</section>
+
+<section class="slide">
+  <div class="tag">About me</div>
+  <h2>Hi, I am Marwan</h2>
+  <ul>
+    <li>Software engineer working with <b>React, Next.js, TypeScript and Node.js</b></li>
+    <li>I mentor web developers 1:1 at altechmentor.com</li>
+    <li>Today I will teach you the way I wish someone had taught me: one small step at a time</li>
+  </ul>
+  <p class="muted">GitHub: marawanthedev · YouTube: @codewithmarwan</p>
+</section>
+
+<section class="slide">
+  <div class="tag">What we will build</div>
+  <h2>Mini Shop</h2>
+  <ul>
+    <li>A product page with <b>filters</b> and pictures</li>
+    <li>An <b>API</b> with a health check, CORS and a <b>database</b></li>
+    <li>An <b>Add product</b> form, protected by <b>validation</b></li>
+    <li>A <b>cart</b> that shares its state across the app</li>
+  </ul>
+  <p class="muted">The styling is done. You only write TypeScript and JSX.</p>
+</section>
+
+<section class="slide">
+  <div class="tag">Demo</div>
+  <h2>A 2-minute walkthrough</h2>
+  <div class="box" style="text-align:center;padding:6vh 2vw">
+    <div style="font-size:9vw;line-height:1">▶</div>
+    <p style="margin-top:2vh">Play the demo video now</p>
+    <p class="muted">mini-shop-walkthrough-ar-eg.mp4</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="tag">The big picture</div>
+  <h2>What happens when you click?</h2>
+  <div class="flow">
+    <div class="node">Browser<small>React · ui → hooks → api</small></div>
+    <div class="arrow">→</div>
+    <div class="node">Express API<small>routes → controllers → db</small></div>
+    <div class="arrow">→</div>
+    <div class="node">Postgres<small>Neon</small></div>
+  </div>
+  <p class="muted">Click → HTTP request → route → controller → SQL → rows → JSON → React redraws. Today we build every arrow.</p>
+</section>
+
+<section class="slide">
+  <div class="tag">Agenda</div>
+  <h2>Eight small steps, one branch each</h2>
+  <table>
+    <tr><th>Step</th><th>We build</th><th>You learn</th></tr>
+    <tr><td>1</td><td>Product page, filters</td><td>components, props, local state</td></tr>
+    <tr><td>2</td><td>Server, health, CORS</td><td>Express routing, CORS</td></tr>
+    <tr><td>3</td><td>Database and seed</td><td>Neon, env files, seeding</td></tr>
+    <tr><td>4</td><td>API layer and a hook</td><td>custom hooks</td></tr>
+    <tr><td>5–6</td><td>Add product, validation</td><td>forms, Zod</td></tr>
+    <tr><td>7</td><td>Delete endpoint</td><td>Postman</td></tr>
+    <tr><td>8</td><td>The cart</td><td>global state, zustand</td></tr>
+  </table>
+</section>
+
+<section class="slide">
+  <div class="tag">Prerequisites</div>
+  <h2>What you need</h2>
+  <ul>
+    <li><b>Git</b> and <b>Node.js 22</b> (LTS)</li>
+    <li><b>VS Code</b> and Chrome or Edge</li>
+    <li>A <b>Neon</b> account (neon.com), free</li>
+    <li><b>Postman</b> (postman.com/downloads)</li>
+  </ul>
+  <p class="muted">Check with: node -v · git --version</p>
+</section>
+
+<section class="slide">
+  <div class="tag">Get the code</div>
+  <h2>Clone the repo</h2>
+  <p><b>github.com/marawanthedev/e2e-workshop</b></p>
+  <pre>git clone https://github.com/marawanthedev/e2e-workshop.git
+cd e2e-workshop
+git checkout starter
+npm install
+npm run check</pre>
+  <p class="muted">Everyone should see all ticks before we start.</p>
+</section>
+
+<section class="slide">
+  <div class="tag">How to follow along</div>
+  <h2>Fell behind? Jump ahead.</h2>
+  <p>Every branch is the state <b>at the end</b> of a step.</p>
+  <pre>git checkout -f step-3-database</pre>
+  <p class="muted">Add git stash -u first if you want to keep your own work.</p>
+</section>
+
+<section class="slide">
+  <div class="tag">Step 1</div>
+  <h2>Rendering a list, and local state</h2>
+  <pre>{products.map((product) => (
+  &lt;ProductCard key={product.id} product={product} /&gt;
+))}
+
+const [category, setCategory] = useState("All");</pre>
+  <p><code class="i">key</code> tells React which item is which. <code class="i">useState</code> is <b>local state</b>: one component owns it.</p>
+</section>
+
+<section class="slide">
+  <div class="tag">Step 2</div>
+  <h2>The server, in layers</h2>
+  <table>
+    <tr><th>Layer</th><th>Job</th><th>File</th></tr>
+    <tr><td>route</td><td>which URL and method</td><td>routes/products.ts</td></tr>
+    <tr><td>controller</td><td>what to do</td><td>controllers/products.ts</td></tr>
+    <tr><td>db</td><td>talk to Postgres</td><td>db/postgres.ts (step 3)</td></tr>
+  </table>
+  <p><b>GET /api/health</b> → <code class="i">{"status":"ok"}</code>. Monitors call it to measure <b>uptime</b>.</p>
+</section>
+
+<section class="slide">
+  <div class="tag">Step 2</div>
+  <h2>"Blocked by CORS policy"</h2>
+  <div class="row">
+    <div class="box"><h3>Postman or curl</h3><p>Not a browser. The request works.</p></div>
+    <div class="box"><h3>Our page in the browser</h3><p>The answer arrives, but the <b>browser</b> refuses to hand it over, because it came from a different website.</p></div>
+  </div>
+  <pre>app.use(cors({ origin: config.clientOrigin }));</pre>
+  <p class="muted">The fix is on the server: name the website that may read the answers.</p>
+</section>
+
+<section class="slide">
+  <div class="tag">Step 3</div>
+  <h2>Neon and env files</h2>
+  <pre># server/.env  (never committed)
+DATABASE_URL=postgresql://user:password@host/neondb?sslmode=require</pre>
+  <ul>
+    <li>Secrets and per-machine settings live in <b>.env</b></li>
+    <li><b>.env</b> is in .gitignore, <b>.env.example</b> is committed with empty values</li>
+    <li>In production the same names are set in the hosting dashboard</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <div class="tag">Step 3</div>
+  <h2>Seeding the database</h2>
+  <ul>
+    <li><b>Seeding</b> = filling a fresh database with starting data</li>
+    <li>Everyone gets the same 12 products, with public image links</li>
+    <li>Safe to repeat: it inserts only when the table is empty</li>
+  </ul>
+  <pre>npm run db:seed    # create the table and insert the products
+npm run db:reset   # wipe it and start again</pre>
+</section>
+
+<section class="slide">
+  <div class="tag">Step 4</div>
+  <h2>The api layer, then a custom hook</h2>
+  <div class="row">
+    <div class="box"><h3>Before</h3><p>App fetches, keeps state, filters and draws. Four jobs in one place.</p></div>
+    <div class="box"><h3>After</h3><pre style="font-size:1.5vw">const { products } = useProducts();</pre><p>The hook owns the logic. The component decides what to draw.</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="tag">Step 5</div>
+  <h2>What happens with unchecked data?</h2>
+  <ul>
+    <li>The form sends <b>Magic Gadget</b> with category <b>Gadgets</b></li>
+    <li>The server saves it. No error.</li>
+    <li>No category filter can find it. Wrong data, and nobody told us.</li>
+  </ul>
+  <pre>INSERT INTO products (name, price, category, image_url)
+VALUES ($1, $2, $3, $4)   -- placeholders stop SQL injection</pre>
+</section>
+
+<section class="slide">
+  <div class="tag">Step 6</div>
+  <h2>Validate with Zod</h2>
+  <pre>const newProductSchema = z.object({
+  name: z.string().trim().min(2),
+  price: z.number().positive(),
+  category: z.enum(CATEGORIES),
+  image_url: z.url(),
+});</pre>
+  <p><b>Server first</b>: the real guard (400 Bad Request). <b>Then the form</b>: friendly messages before sending.</p>
+</section>
+
+<section class="slide">
+  <div class="tag">Step 7</div>
+  <h2>Postman and status codes</h2>
+  <table>
+    <tr><th>Request</th><th>Answer</th></tr>
+    <tr><td>POST a faulty product</td><td>400 Bad Request</td></tr>
+    <tr><td>POST a clean product</td><td>201 Created</td></tr>
+    <tr><td>DELETE /api/products/:id</td><td>204 No Content</td></tr>
+    <tr><td>DELETE it again</td><td>404 Not Found</td></tr>
+  </table>
+  <p class="muted">Postman is not our form, so only the server's validation protects us.</p>
+</section>
+
+<section class="slide">
+  <div class="tag">Step 8</div>
+  <h2>Global state with zustand</h2>
+  <div class="row">
+    <div class="box"><h3>Local state</h3><p>The category filter. <b>One</b> component owns it.</p></div>
+    <div class="box"><h3>Global state</h3><p>The cart. The button, the badge and the drawer all need it, in <b>different places</b>.</p></div>
+  </div>
+  <pre>const add = useCartStore((state) => state.add);</pre>
+</section>
+
+<section class="slide">
+  <div class="tag">Wrap-up</div>
+  <h2>You built the whole stack</h2>
+  <ul>
+    <li>React: state, lists, hooks, a store</li>
+    <li>Express: routes, controllers, CORS, validation</li>
+    <li>Postgres on Neon: connection, seed, queries</li>
+    <li>Tools: Postman, env files, Zod</li>
+  </ul>
+  <p class="muted">Next: tests, login, deploying (bonus slides at the end), and the bonus branch on keys and the Profiler.</p>
+</section>
+
+<section class="slide">
+  <div class="tag">Final round</div>
+  <h2>Quiz time!</h2>
+  <div class="prize-row">
+    <div class="box"><div class="big">🥇 3<small>mentoring sessions</small></div></div>
+    <div class="box"><div class="big">🥈 2<small>mentoring sessions</small></div></div>
+    <div class="box"><div class="big">🥉 1<small>mentoring session</small></div></div>
+  </div>
+  <ul>
+    <li>12 questions about what we built today, <b>20 seconds</b> each</li>
+    <li>Points for being right, and more points for being <b>fast</b></li>
+    <li>Scan the QR code on the big screen, pick a nickname, and keep your phone ready</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <div class="tag">Questions? · Keep learning with me</div>
+  <h2>Become a stronger web engineer</h2>
+  <div class="row">
+    <div class="box">
+      <h3>1:1 mentorship</h3>
+      <ul>
+        <li>For students, juniors, mid-level and self-taught developers</li>
+        <li>React, Next.js, TypeScript, testing, debugging and architecture</li>
+        <li>45-minute sessions, 8-week programs and interview prep</li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:1.6vw;margin-top:1.6vh"><svg class="qr" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31 31" shape-rendering="crispEdges"><path fill="#ffffff" d="M0 0h31v31H0z"/><path stroke="#0f1226" d="M1 1.5h7m7 0h1m2 0h3m2 0h7M1 2.5h1m5 0h1m1 0h1m2 0h3m4 0h2m2 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m3 0h1m4 0h1m6 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m2 0h5m2 0h1m1 0h3m1 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m1 0h1m1 0h2m1 0h1m2 0h1m2 0h1m2 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m5 0h1m1 0h3m2 0h1m2 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M11 8.5h3m2 0h1m1 0h1m2 0h1M1 9.5h1m1 0h1m1 0h1m1 0h1m2 0h2m5 0h5m3 0h1m2 0h1M2 10.5h1m3 0h1m1 0h1m1 0h1m2 0h2m1 0h2m3 0h3m2 0h1m2 0h1M3 11.5h5m1 0h3m1 0h1m1 0h4m4 0h1m3 0h3M2 12.5h2m1 0h2m1 0h1m4 0h3m1 0h2m1 0h2m3 0h1m2 0h1M2 13.5h1m2 0h3m3 0h1m3 0h2m1 0h1m2 0h3m2 0h1m1 0h2M3 14.5h3m5 0h3m1 0h2m1 0h1m2 0h4m1 0h1m2 0h1M1 15.5h9m2 0h3m3 0h2m2 0h1m1 0h1m1 0h1m1 0h2M1 16.5h1m2 0h1m5 0h3m3 0h1m1 0h5m3 0h1m1 0h1M4 17.5h1m1 0h2m2 0h4m3 0h2m1 0h5m1 0h1m1 0h2M4 18.5h1m1 0h1m1 0h3m1 0h3m1 0h2m3 0h1m1 0h1m2 0h2m1 0h1M1 19.5h1m2 0h5m2 0h3m1 0h4m2 0h4m3 0h2M2 20.5h2m2 0h1m1 0h5m1 0h2m1 0h4m1 0h1m3 0h1m1 0h1M1 21.5h1m3 0h1m1 0h2m1 0h1m1 0h1m2 0h2m1 0h1m1 0h6M9 22.5h1m2 0h2m1 0h2m3 0h2m3 0h1m1 0h3M1 23.5h7m3 0h1m1 0h2m5 0h2m1 0h1m1 0h2m1 0h2M1 24.5h1m5 0h1m2 0h4m2 0h1m1 0h2m1 0h1m3 0h2M1 25.5h1m1 0h3m1 0h1m1 0h2m2 0h1m3 0h3m1 0h5m2 0h1M1 26.5h1m1 0h3m1 0h1m3 0h2m1 0h1m1 0h2m3 0h1m3 0h1m1 0h1M1 27.5h1m1 0h3m1 0h1m1 0h1m2 0h2m1 0h4m2 0h1m2 0h3m2 0h1M1 28.5h1m5 0h1m2 0h1m3 0h2m1 0h5m3 0h1m2 0h1M1 29.5h7m1 0h2m2 0h2m1 0h2m1 0h8m1 0h2"/></svg>
+<p style="margin:0"><a href="https://www.altechmentor.com/" target="_blank" rel="noopener">altechmentor.com</a><br>scan to apply for mentorship</p></div>
+    </div>
+    <div class="box">
+      <h3>Find me online</h3>
+      <table class="links">
+        <tr><td>GitHub</td><td><a href="https://github.com/marawanthedev" target="_blank" rel="noopener">github.com/marawanthedev</a></td></tr>
+        <tr><td>Website</td><td><a href="https://marwan-mostafa.com/" target="_blank" rel="noopener">marwan-mostafa.com</a></td></tr>
+        <tr><td>LinkedIn</td><td><a href="https://www.linkedin.com/in/marwan-mostafa-6112801a6/" target="_blank" rel="noopener">linkedin.com/in/marwan-mostafa</a></td></tr>
+        <tr><td>YouTube</td><td><a href="https://www.youtube.com/@codewithmarwan" target="_blank" rel="noopener">youtube.com/@codewithmarwan</a></td></tr>
+      </table>
+    </div>
+  </div>
+  <p class="muted">The code and every branch are in the repo. Thank you! Bonus slides on deploying follow.</p>
+</section>
+
+<section class="slide">
+  <div class="tag">Bonus · Deploy it</div>
+  <h1>Put it on the internet</h1>
+  <p class="muted">Three hosts, three jobs. All free tiers, no credit card.</p>
+  <div class="flow">
+    <div class="node">Vercel<small>the React client</small></div>
+    <div class="arrow">→</div>
+    <div class="node">Render<small>the Express API</small></div>
+    <div class="arrow">→</div>
+    <div class="node">Neon<small>Postgres, already live</small></div>
+  </div>
+  <p class="muted">Order matters: API first, because the client needs its URL. Use the <b>final</b> branch.</p>
+</section>
+
+<section class="slide">
+  <div class="tag">Bonus · Deploy 1 of 5</div>
+  <h2>Push your code to GitHub</h2>
+  <pre>git checkout final
+git remote add mine https://github.com/&lt;you&gt;/mini-shop.git
+git push -u mine final</pre>
+  <ul>
+    <li>Create an empty repo on GitHub first, with no README</li>
+    <li>Render and Vercel both deploy straight from a GitHub repo and branch</li>
+    <li><b>.env</b> is in .gitignore, so your database password is not pushed</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <div class="tag">Bonus · Deploy 2 of 5</div>
+  <h2>The API on Render</h2>
+  <ol>
+    <li>Render dashboard → <b>New</b> → <b>Blueprint</b> → pick your repo and the <b>final</b> branch</li>
+    <li>Render reads <code class="i">render.yaml</code>: build <code class="i">npm install</code>, start <code class="i">npm run start -w server</code></li>
+    <li>Set the environment variables below</li>
+    <li>Open <code class="i">https://&lt;service&gt;.onrender.com/api/health</code>, you should see <code class="i">{"status":"ok"}</code></li>
+  </ol>
+  <table>
+    <tr><th>Variable</th><th>Value</th></tr>
+    <tr><td>DATABASE_URL</td><td>your Neon connection string, the same as in server/.env</td></tr>
+    <tr><td>CLIENT_ORIGIN</td><td>leave http://localhost:5173 for now</td></tr>
+  </table>
+  <p class="muted">The health endpoint from step 2 is exactly what Render calls to know your app is alive.</p>
+</section>
+
+<section class="slide">
+  <div class="tag">Bonus · Deploy 3 of 5</div>
+  <h2>The client on Vercel</h2>
+  <ol>
+    <li>Vercel → <b>Add New</b> → <b>Project</b> → pick the repo</li>
+    <li>Framework preset <b>Vite</b>, <b>Root Directory</b> = <code class="i">client</code></li>
+    <li>Turn on <b>Include source files outside of the Root Directory</b> (the app is an npm workspace)</li>
+    <li>Add the variable below, then <b>Deploy</b> and copy your Vercel URL</li>
+  </ol>
+  <pre>VITE_API_URL=https://&lt;service&gt;.onrender.com/api</pre>
+  <p class="muted"><code class="i">VITE_</code> variables are baked in at build time, so change it and you must redeploy.</p>
+</section>
+
+<section class="slide">
+  <div class="tag">Bonus · Deploy 4 of 5</div>
+  <h2>Close the loop: allow your site (CORS)</h2>
+  <p>Remember step 2? The browser blocks any site the API has not named. Tell Render about your Vercel site:</p>
+  <pre>CLIENT_ORIGIN=https://your-app.vercel.app</pre>
+  <ul>
+    <li><b>No trailing slash</b>, or the match fails</li>
+    <li>Render redeploys by itself. Open your Vercel URL: the 12 products load from Neon</li>
+    <li>The same database now serves localhost and production. Seed once with <code class="i">npm run db:seed</code></li>
+  </ul>
+</section>
+
+<section class="slide">
+  <div class="tag">Bonus · Deploy 5 of 5</div>
+  <h2>When it does not work</h2>
+  <table>
+    <tr><th>Symptom</th><th>Likely cause</th></tr>
+    <tr><td>Console says CORS</td><td>CLIENT_ORIGIN is wrong or has a trailing slash</td></tr>
+    <tr><td>The page calls localhost:3001</td><td>VITE_API_URL is not set. Set it, then redeploy the client</td></tr>
+    <tr><td>API returns 500</td><td>Read the Render logs. Usually DATABASE_URL is wrong, or the seed was never run</td></tr>
+    <tr><td>First load takes a minute</td><td>Free tier cold start. The API sleeps after 15 minutes without traffic</td></tr>
+  </table>
+  <p class="muted">The full written steps are in DEPLOY.md on the <b>final</b> branch.</p>
+</section>
+
+<div class="hud"><span id="n"></span> · ← → to navigate · F for fullscreen</div>
+<div class="bar" id="bar"></div>
+<script>
+  const slides = [...document.querySelectorAll(".slide")];
+  let i = Math.max(0, Math.min(slides.length - 1, (parseInt(location.hash.slice(1), 10) || 1) - 1));
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, k) => s.classList.toggle("active", k === i));
+    document.getElementById("n").textContent = `${i + 1} / ${slides.length}`;
+    document.getElementById("bar").style.width = `${((i + 1) / slides.length) * 100}%`;
+    history.replaceState(null, "", `#${i + 1}`);
+  }
+  addEventListener("keydown", (e) => {
+    if (["ArrowRight", "PageDown", " "].includes(e.key)) show(i + 1);
+    else if (["ArrowLeft", "PageUp"].includes(e.key)) show(i - 1);
+    else if (e.key === "Home") show(0);
+    else if (e.key === "End") show(slides.length - 1);
+    else if (e.key.toLowerCase() === "f") document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  });
+  addEventListener("click", (e) => { if (!e.target.closest("a")) show(i + 1); });
+  show(i);
+</script>
+</body>
+</html>

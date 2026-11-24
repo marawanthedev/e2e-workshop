@@ -75,7 +75,7 @@ Each branch is the state **at the end** of that step. The start of step N is the
 | [`step-8-cart-zustand`](../../tree/step-8-cart-zustand) | The cart, with a zustand store | Global state | 15 min |
 | [`final`](../../tree/final) | The finished app, plus `render.yaml` and `DEPLOY.md` | Deploying to Render and Vercel | bonus |
 | [`bonus`](../../tree/bonus) | `final` plus a keys and React Profiler lab (`/?lab=keys`) | `key`, `React.memo`, the Profiler | bonus |
-| [`main`](../../tree/main) | The facilitator materials: workshop guide, slides, script and live quiz | | |
+| [`main`](../../tree/main) | This README and the slides. Every other branch also has the slides | | |
 
 ### Fell behind? Catch up
 
@@ -85,14 +85,10 @@ git checkout -f step-3-database   # discards your local changes and jumps to tha
 
 Want to keep your work first? Run `git stash -u` before switching.
 
-## Workshop materials (on the `main` branch)
+## Slides
 
-| What | Where |
-|---|---|
-| **Workshop guide**: step-by-step instructions with copy-ready code, prerequisites and a cheat sheet. Presenter notes appear when you tick the checkbox in the header. | [`guide/workshop-guide.html`](../../blob/main/guide/workshop-guide.html). Download it and open it in a browser. |
-| **Slides**: a 22-slide deck with keyboard navigation (arrow keys, F for fullscreen) | [`slides/index.html`](../../blob/main/slides/index.html) |
-| **Facilitator script**: timeline, talking points, fixes and what to cut when running late | [`docs/WORKSHOP_SCRIPT.md`](../../blob/main/docs/WORKSHOP_SCRIPT.md) |
-| **Live quiz**: a Kahoot-style game for the end of the session, with speed-based scoring and a podium | [`quiz/`](../../tree/main/quiz). Read its README to run it. |
+The workshop slides are in [`slides/index.html`](slides/index.html), on every branch. Download the file and open it in a browser
+(arrow keys to move, `F` for fullscreen). The last section is a **bonus: how to deploy** the API on Render and the client on Vercel.
 
 ## Project layout (final state)
 
